@@ -1,0 +1,7 @@
+honeypot.ini
+honeypot.log
+venv
+*.egg-info
+dist/
+__pycache__
+*.pyc
