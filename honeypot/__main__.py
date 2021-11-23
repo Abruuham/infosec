@@ -13,7 +13,7 @@ from honeypot import Honeypot
 import sys
 
 # Check arguments
-if len(sys.argv) < 2 or sys.argv[0] in ['-h', '--help']:
+if len(sys.argv) < 2 or sys.argv[1] in ['-h', '--help']:
     print(__doc__)
     sys.exit(1)
 

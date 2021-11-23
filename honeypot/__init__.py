@@ -20,7 +20,7 @@ class Honeypot(object):
         self.logger.info('Log file path: %s' % self.log_file_path)
 
     def handle_connection(self, client_socket, port, ip, remote_port):
-        self.logger.info('%s: %s:%d: %s' % (port, ip, remote_port))
+        self.logger.info('Connection received: %s:%s: %d' % (port, ip, remote_port))
         client_socket.settimeout(10)
         try:
             data = client_socket.recv(1024)
