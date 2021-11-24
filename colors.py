@@ -1,5 +1,3 @@
-import os
-os.system('color')
 class bcolors:
     COLOR = {
         'YELLOW': '\033[33m',
