@@ -57,7 +57,7 @@ def get_config_path() -> list[str]:
 
     config_files = [
         join(root, "etc/cowrie.cfg.dist"),
-        "/etc/cowrie/cowrie.cfg",
+        "/etc/stinger/cowrie.cfg",
         join(root, "etc/cowrie.cfg"),
         join(root, "cowrie.cfg"),
     ]
