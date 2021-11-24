@@ -54,7 +54,7 @@ def get_config_path() -> list[str]:
     """
     current_path = abspath(dirname(__file__))
     root = "/".join(current_path.split("/")[:-3])
-
+    print(root)
     config_files = [
         join(root, "etc/cowrie.cfg.dist"),
         "/etc/stinger/cowrie.cfg",
