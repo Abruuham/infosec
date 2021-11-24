@@ -38,7 +38,7 @@ class Honeypot(object):
         listener.listen(5)
         while True:
             client, addr = listener.accept()
-            print('[*] Accepted connection from: %s:%d' % (addr[0], addr[1]))
+            self.logger.info('[*] Accepted connection from: %s:%d' % (addr[0], addr[1]))
             client_handler = threading.Thread(target=self.handle_connection, args=(client, port, addr[0], addr[1]))
             client_handler.start()
 

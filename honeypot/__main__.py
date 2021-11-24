@@ -8,7 +8,7 @@ Options:
 """
 
 import configparser
-from honeypot import Honeypot
+from stinger import Honeypot
 import sys
 import colors
 
@@ -43,7 +43,7 @@ print(
 )
 
 # Check arguments
-if len(sys.argv) < 2 or sys.argv[1] in ['-h', '--help']:
+if len(sys.argv) > 1 or sys.argv[1] in ['-h', '--help']:
     print(__doc__)
     sys.exit(1)
 else:

@@ -8,14 +8,14 @@ def readme_content():
 
 
 setup(
-    name='honeypot',
+    name='stinger',
     version='1.0.0',
-    description='Simple HoneyPot',
+    description='Simple Honeypot logging',
     long_description=readme_content(),
     author='Abraham',
     author_email='abrahamcalvillo@ymail.com',
     license='MIT',
-    packages=['honeypot'],
+    packages=['singer'],
     zip_safe=False,
     install_requires=[]
 )
