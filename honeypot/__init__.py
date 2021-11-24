@@ -1,5 +1,6 @@
 import logging
-from socket import socket,timeout
+from socket import socket, timeout
+from colors import bcolors
 import threading
 
 
@@ -25,7 +26,7 @@ class Honeypot(object):
         try:
             data = client_socket.recv(1024)
             self.logger.info('Data received: %s: %s:%d: %s' % (port, ip, remote_port, data))
-            client_socket.send('Access Denied.\n'.encode('utf8'))
+            client_socket.send((bcolors.COLOR['RED']+'Access Denied.\n').encode('utf8'))
         except timeout:
             pass
         client_socket.close()

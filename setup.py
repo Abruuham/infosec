@@ -8,7 +8,7 @@ def readme_content():
 
 
 setup(
-    name='HoneyPot',
+    name='honeypot',
     version='1.0.0',
     description='Simple HoneyPot',
     long_description=readme_content(),
