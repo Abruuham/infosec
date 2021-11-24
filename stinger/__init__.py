@@ -2,6 +2,7 @@ import logging
 from socket import socket, timeout
 from colors import bcolors
 import threading
+from stinger.commands.command import StingerCommand
 
 
 class Honeypot(object):
@@ -50,6 +51,7 @@ class Honeypot(object):
 
     def run(self):
         self.start_listening()
+
 
     def prepare_logger(self):
         logging.basicConfig(level=logging.DEBUG,

@@ -15,7 +15,9 @@ setup(
     author='Abraham',
     author_email='abrahamcalvillo@ymail.com',
     license='MIT',
-    packages=['singer'],
+    packages=['stinger'],
     zip_safe=False,
-    install_requires=[]
+    install_requires=[
+        'twisted'
+    ]
 )

@@ -5,17 +5,21 @@ import stat
 import time
 from typing import Callable, Optional
 
+from twisted.internet import error
 from twisted.python import failure, log
 
-class StringCommand:
+from stinger.commands import fs
+
+
+class StingerCommand:
 
     safe_out_file: str = ""
 
-    def __init__(self, protocol, *args):
-        self.protocol = protocol
+    def __init__(self, *args):
+        # self.protocol = protocol
         self.args = list(args)
-        self.environ = self.protocol.cmdstack[0].environ
-        self.fs = self.protocol.fs
+        # self.environ = self.protocol.cmdstack[0].environ
+        # self.fs = self.protocol.fs
         self.data: bytes = None  # output data
         self.input_data: Optional[
             bytes
@@ -53,9 +57,9 @@ class StringCommand:
                     self.protocol.terminal.transport.session.id,
                     re.sub("[^A-Za-z0-9]", "_", self.outfile),
                 )
-                self.safeoutfile = os.path.join(
-                    CowrieConfig.get("honeypot", "download_path"), tmp_fname
-                )
+                # self.safeoutfile = os.path.join(
+                #     CowrieConfig.get("honeypot", "download_path"), tmp_fname
+                # )
                 perm = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH
                 try:
                     self.fs.mkfile(self.outfile, 0, 0, 0, stat.S_IFREG | perm)
@@ -88,13 +92,13 @@ class StringCommand:
         """
         self.writefn(data.encode("utf8"))
 
-    def writeBytes(self, data: bytes) -> None:
+    def write_bytes(self, data: bytes) -> None:
         """
         Like write() but input is bytes
         """
         self.writefn(data)
 
-    def errorWrite(self, data: str) -> None:
+    def error_write(self, data: str) -> None:
         """
         Write errors to the user on stderr
         """
@@ -102,14 +106,14 @@ class StringCommand:
 
     def check_arguments(self, application, args):
         files = []
-        for arg in args:
-            path = self.fs.resolve_path(arg, self.protocol.cwd)
-            if self.fs.isdir(path):
-                self.errorWrite(
-                    f"{application}: error reading `{arg}': Is a directory\n"
-                )
-                continue
-            files.append(path)
+        # for arg in args:
+        #     path = self.fs.resolve_path(arg, self.protocol.cwd)
+        #     if self.fs.isdir(path):
+        #         self.errorWrite(
+        #             f"{application}: error reading `{arg}': Is a directory\n"
+        #         )
+        #         continue
+        #     files.append(path)
         return files
 
     def set_input_data(self, data: bytes) -> None:
@@ -137,38 +141,40 @@ class StringCommand:
         Sometimes client is disconnected and command exits after. So cmdstack is gone
         """
         if (
-                self.protocol
-                and self.protocol.terminal
-                and hasattr(self, "safeoutfile")
+                # self.protocol
+                # and self.protocol.terminal
+                hasattr(self, "safeoutfile")
                 and self.safeoutfile
         ):
             if hasattr(self, "outfile") and self.outfile:
-                self.protocol.terminal.redirFiles.add((self.safeoutfile, self.outfile))
+                print('hello')
+                # self.protocol.terminal.redirFiles.add((self.safeoutfile, self.outfile))
             else:
-                self.protocol.terminal.redirFiles.add((self.safeoutfile, ""))
+                print('nunya')
+                # self.protocol.terminal.redirFiles.add((self.safeoutfile, ""))
 
-        if len(self.protocol.cmdstack):
-            self.protocol.cmdstack.pop()
-            if len(self.protocol.cmdstack):
-                self.protocol.cmdstack[-1].resume()
-        else:
-            ret = failure.Failure(error.ProcessDone(status=""))
-            # The session could be disconnected already, when his happens .transport is gone
-            try:
-                self.protocol.terminal.transport.processEnded(ret)
-            except AttributeError:
-                pass
+        # if len(self.protocol.cmdstack):
+        #     self.protocol.cmdstack.pop()
+        #     if len(self.protocol.cmdstack):
+        #         self.protocol.cmdstack[-1].resume()
+        # else:
+        ret = failure.Failure(error.ProcessDone(status=""))
+        # The session could be disconnected already, when his happens .transport is gone
+        try:
+            self.protocol.terminal.transport.processEnded(ret)
+        except AttributeError:
+            pass
 
     def handle_CTRL_C(self) -> None:
         log.msg("Received CTRL-C, exiting..")
         self.write("^C\n")
         self.exit()
 
-    def lineReceived(self, line: str) -> None:
+    def line_received(self, line: str) -> None:
         log.msg(f"QUEUED INPUT: {line}")
         # FIXME: naive command parsing, see lineReceived below
         # line = "".join(line)
-        self.protocol.cmdstack[0].cmdpending.append(shlex.split(line, posix=True))
+        # self.protocol.cmdstack[0].cmdpending.append(shlex.split(line, posix=True))
 
     def resume(self) -> None:
         pass

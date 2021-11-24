@@ -1,11 +1,15 @@
+import random
 
+from twisted.internet import reactor
+from stinger.commands.command import StingerCommand
 from typing import Optional
 
 commands = {}
 
 O_O, O_Q, O_P = 1, 2, 3
 
-class Command_adduser(StingCommand):
+
+class Command_adduser(StingerCommand):
     item: int
     output: list[tuple[int, str]] = [
         (O_O, "Adding user `%(username)s' ...\n"),
@@ -74,7 +78,7 @@ class Command_adduser(StingCommand):
     def schedule_next(self):
         self.scheduled = reactor.callLater(0.5 + random.random() * 1, self.do_output)
 
-    def lineReceived(self, line):
+    def line_received(self, line):
         if self.item + 1 == len(self.output) and line.strip() in ("n", "no"):
             self.exit()
             return
