@@ -12,6 +12,7 @@ from stinger import Honeypot
 import sys
 import colors
 
+
 print(
     colors.bcolors.COLOR['YELLOW'] +
     '============================================================================\n' +

@@ -1,8 +1,9 @@
 import logging
 from socket import socket, timeout
 from colors import bcolors
+from stinger.shell.shell import Test
 import threading
-from stinger.commands.command import StingerCommand
+
 
 
 class Honeypot(object):
@@ -27,7 +28,10 @@ class Honeypot(object):
         try:
             data = client_socket.recv(1024)
             self.logger.info('Data received: %s: %s:%d: %s' % (port, ip, remote_port, data))
-            client_socket.send((bcolors.COLOR['RED']+'Access Denied.').encode('utf8'))
+            # client_socket.send((bcolors.COLOR['RED']+'Access Denied.').encode('utf8'))
+            test = Test
+            test.displayMOTD()
+            client_socket.send()
             print('\n')
         except timeout:
             pass
@@ -51,7 +55,6 @@ class Honeypot(object):
 
     def run(self):
         self.start_listening()
-
 
     def prepare_logger(self):
         logging.basicConfig(level=logging.DEBUG,
