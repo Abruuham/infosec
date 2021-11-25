@@ -9,6 +9,7 @@ Options:
 
 import configparser
 from stinger import Honeypot
+from stinger.shell.shell import Test
 import sys
 import colors
 
@@ -46,6 +47,8 @@ print(
 # Check arguments
 if len(sys.argv) < 2 or sys.argv[1] in ['-h', '--help']:
     print(__doc__)
+    test = Test()
+    print(test.displayMOTD())
     sys.exit(1)
 else:
     # Load config

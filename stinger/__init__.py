@@ -5,7 +5,6 @@ from stinger.shell.shell import Test
 import threading
 
 
-
 class Honeypot(object):
 
     def __init__(self, bind_ip, ports, log_file_path):
@@ -29,7 +28,7 @@ class Honeypot(object):
             data = client_socket.recv(1024)
             self.logger.info('Data received: %s: %s:%d: %s' % (port, ip, remote_port, data))
             # client_socket.send((bcolors.COLOR['RED']+'Access Denied.').encode('utf8'))
-            test = Test
+            test = Test()
             testing = test.displayMOTD()
             client_socket.send(testing)
             print('\n')
@@ -54,6 +53,9 @@ class Honeypot(object):
             self.listener_threads[port].start()
 
     def run(self):
+        test = Test()
+        testing = test.displayMOTD()
+        print(testing)
         self.start_listening()
 
     def prepare_logger(self):
