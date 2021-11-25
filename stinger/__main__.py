@@ -9,7 +9,6 @@ Options:
 
 import configparser
 from stinger import Honeypot
-from stinger.shell.shell import Test
 import sys
 import colors
 
