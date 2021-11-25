@@ -139,11 +139,12 @@ class Test:
         if not path or not self.existing(path.replace('/','')):
             print('not found')
         f: Any = self.getfile('motd')
-        return open('motd', "rb").read().decode('UTF-8')
+        content = open('motd', "rb").read().decode('UTF-8')
+        return content
 
     def displayMOTD(self):
         try:
-            print(self.file_contents("motd"))
+            return self.file_contents("motd")
         except Exception as e:
             print(str(e))
             pass

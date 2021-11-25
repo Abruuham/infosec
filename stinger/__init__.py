@@ -30,8 +30,8 @@ class Honeypot(object):
             self.logger.info('Data received: %s: %s:%d: %s' % (port, ip, remote_port, data))
             # client_socket.send((bcolors.COLOR['RED']+'Access Denied.').encode('utf8'))
             test = Test
-            test.displayMOTD()
-            client_socket.send()
+            testing = test.displayMOTD()
+            client_socket.send(testing)
             print('\n')
         except timeout:
             pass
