@@ -52,7 +52,6 @@ print(
 )
 
 HOST_KEY = paramiko.RSAKey(filename='server.key')
-SSH_BANNER = 'Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64'
 
 UP_KEY = '\x1b[A'.encode()
 DOWN_KEY = '\x1b[B'.encode()
@@ -194,7 +193,7 @@ def handle_connection(client, addr):
             chan.send("Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
             chan.send("The programs included with the Kali GNU/Linux system are free software;\r\n" +
                       "the exact distribution terms for each program are described in the\r\n" +
-                      "individual files in /usr/share/doc/*/copyright.\r\n" +
+                      "individual files in /usr/share/doc/*/copyright.\r\n\r\n" +
                       "Kali GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent\r\n" +
                       "permitted by applicable law.\r\n" +
                       "Last login: " + date + " from " + str(client_ip) + "\r\n" +
@@ -229,11 +228,12 @@ def handle_connection(client, addr):
 
                 chan.send("\r\n")
                 command = command.rstrip()
-                logging.info('Command receied ({}): {}'.format(client_ip, command))
+                logging.info('Command received ({}): {}'.format(client_ip, command))
                 # detect_url(command, client_ip)
 
                 if command == "exit":
-                    settings.addLogEntry("Connection closed (via exit command): " + client_ip + "\n")
+                    # settings.addLogEntry("Connection closed (via exit command): " + client_ip + "\n")
+                    chan.send('logout\r\n\r\nConnection to 192.168.1.242 closed')
                     run = False
 
                 else:
