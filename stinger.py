@@ -152,7 +152,7 @@ def handle_connection(client, addr):
     try:
         transport = paramiko.Transport(client)
         transport.add_server_key(HOST_KEY)
-        transport.local_version = SSH_BANNER  # Change banner to appear more convincing
+        # transport.local_version = SSH_BANNER  # Change banner to appear more convincing
         server = StingerPot(client_ip)
         try:
             transport.start_server(server=server)
