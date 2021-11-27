@@ -186,8 +186,12 @@ def handle_connection(client, addr):
             logging.info('** Client ({}): never asked for a shell'.format(client_ip))
             raise Exception("No shell request")
 
+        print("root@localhost's password: "+colors.bcolors.COLOR['CLEAR'])
+        s = input()
+        print(colors.bcolors.COLOR['RESET_ALL'])
+
         try:
-            chan.send("Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-128-generic x86_64)\r\n\r\n")
+            chan.send("Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
             # chan.send(open('motd', 'rb').read().decode('UTF-8'))
             run = True
             while run:
