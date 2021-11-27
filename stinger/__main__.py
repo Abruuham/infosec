@@ -8,7 +8,7 @@ Options:
 """
 
 import configparser
-from stinger import Honeypot
+from stinger import Honeypot, StartServer
 import sys
 import colors
 
@@ -46,8 +46,6 @@ print(
 # Check arguments
 if len(sys.argv) < 2 or sys.argv[1] in ['-h', '--help']:
     print(__doc__)
-    test = Test()
-    print(test.displayMOTD())
     sys.exit(1)
 else:
     # Load config
@@ -68,7 +66,7 @@ else:
         sys.exit(1)
 
     # Launch honeypot
-    honeypot = Honeypot(host, ports_list, log_file_path)
+    server = StartServer(host, ports_list, log_file_path)
     honeypot.run()
 
 

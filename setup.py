@@ -18,6 +18,7 @@ setup(
     packages=['stinger', 'shell'],
     zip_safe=False,
     install_requires=[
-        'twisted'
+        'twisted',
+        'paramiko'
     ]
 )

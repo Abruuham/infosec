@@ -1,7 +1,15 @@
+Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64
 
-The programs included with the Debian GNU/Linux system are free software;
+The programs included with the Kali GNU/Linux system are free software;
 the exact distribution terms for each program are described in the
 individual files in /usr/share/doc/*/copyright.
-
-Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+Kali GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
 permitted by applicable law.
+Last login: Fri Nov 26 02:10:31 2021 from 192.168.1.163
+┏━(Message from Kali developers)
+┃
+┃ This is a minimal installation of Kali Linux, you likely
+┃ want to install supplementary tools. Learn how:
+┃ ⇒ https://www.kali.org/docs/troubleshooting/common-minimum-setup/
+┃
+┗━(Run “touch ~/.hushlogin” to hide this message)
