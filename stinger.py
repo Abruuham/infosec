@@ -11,7 +11,7 @@ import logging
 import socket
 import threading
 import argparse
-import configparser
+import time
 import sys
 import traceback
 from binascii import hexlify
@@ -189,8 +189,26 @@ def handle_connection(client, addr):
         # chan.send("root@localhost's password: "+colors.bcolors.COLOR['CLEAR'])
 
         try:
-            chan.send(colors.bcolors.COLOR['RESET_ALL'] + "Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
-            chan.send(open('motd', 'rb').read().decode('UTF-8'))
+            date = time.ctime()
+            chan.send("Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
+            chan.send("The programs included with the Kali GNU/Linux system are free software;\n" +
+                      "the exact distribution terms for each program are described in the\n" +
+                      "individual files in /usr/share/doc/*/copyright.\n" +
+                      "Kali GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent\n" +
+                      "permitted by applicable law.\n" +
+                      "Last login: " + date + " from " + str(client_ip) + "\n" +
+                      "┏━("+colors.bcolors.COLOR["RED"] + "Message from Kali developers" +
+                      colors.bcolors.COLOR["RESET_ALL"] + ")\n" +
+                      "┃\n" +
+                      "┃ This is a minimal installation of Kali Linux, you likely\n" +
+                      "┃ want to install supplementary tools. Learn how:\n" +
+                      "┃ ⇒ https://www.kali.org/docs/troubleshooting/common-minimum-setup/\n" +
+                      "┃\n" +
+                      "┗━(" + colors.bcolors.COLOR['GREY'] + "Run “touch ~/.hushlogin” to hide this message)" +
+                      colors.bcolors.COLOR['RESET_ALL'] + "\n")
+
+            # chan.send(open('motd', 'rb').read().decode('UTF-8'))
+
             run = True
             while run:
                 chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
