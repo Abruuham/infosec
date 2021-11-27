@@ -15,7 +15,7 @@ setup(
     author='Abraham',
     author_email='abrahamcalvillo@ymail.com',
     license='MIT',
-    packages=['stinger', 'shell'],
+    packages=['stinger'],
     zip_safe=False,
     install_requires=[
         'twisted',
