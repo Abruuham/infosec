@@ -190,7 +190,7 @@ def handle_connection(client, addr):
         d = chan.receive(1024)
 
         try:
-            chan.send(colors.bcolors.COLOR['RESET_ALL'] + '"Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
+            chan.send(colors.bcolors.COLOR['RESET_ALL'] + "Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
             # chan.send(open('motd', 'rb').read().decode('UTF-8'))
             run = True
             while run:
