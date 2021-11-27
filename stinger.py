@@ -186,11 +186,11 @@ def handle_connection(client, addr):
             logging.info('** Client ({}): never asked for a shell'.format(client_ip))
             raise Exception("No shell request")
 
-        chan.send("root@localhost's password: "+colors.bcolors.COLOR['CLEAR'])
+        # chan.send("root@localhost's password: "+colors.bcolors.COLOR['CLEAR'])
 
         try:
             chan.send(colors.bcolors.COLOR['RESET_ALL'] + "Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
-            # chan.send(open('motd', 'rb').read().decode('UTF-8'))
+            chan.send(open('motd', 'rb').read().decode('UTF-8'))
             run = True
             while run:
                 chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
