@@ -24,6 +24,7 @@ logging.basicConfig(level=logging.DEBUG,
                     filename='stinger.log',
                     filemode='a')
 
+
 def prepare_logger():
 
     logger = logging.getLogger(__name__)
@@ -88,37 +89,6 @@ class StingerPot(paramiko.ServerInterface):
         logging.info('client sent command via check_channel_exec_request ({}): {}'.format(
             self.client_ip, username, command))
         return True
-
-# def handle_connection(self, client_socket, port, ip, remote_port):
-#     self.logger.info('Connection received: %s:%s: %d' % (port, ip, remote_port))
-#     client_socket.settimeout(10)
-#     try:
-#         data = client_socket.recv(1024)
-#         self.logger.info('Data received: %s: %s:%d: %s' % (port, ip, remote_port, data))
-#         # client_socket.send((bcolors.COLOR['RED']+'Access Denied.').encode('utf8'))
-#
-#         client_socket.send(open('motd', "rb").read().decode('UTF-8'))
-#         client_socket.send('\n')
-#     except timeout:
-#         pass
-#     client_socket.close()
-#
-# def start_new_listener_thread(self, port):
-#     # create a new listener
-#     listener = socket()
-#     listener.bind((self.bind_ip, int(port)))
-#     listener.listen(10)
-#     self.logger('Listening for connection...')
-#     while True:
-#         client, addr = listener.accept()
-#         self.logger.info('[*] Accepted connection from: %s:%d' % (addr[0], addr[1]))
-#         client_handler = threading.Thread(target=self.handle_connection, args=(client, port, addr[0], addr[1]))
-#         client_handler.start()
-#
-# def start_listening(self):
-#     for port in self.ports:
-#         self.listener_threads[port] = threading.Thread(target=self.start_new_listener_thread, args=(port,))
-#         self.listener_threads[port].start()
 
 
 def handle_command(cmd, chan, ip):
@@ -258,4 +228,4 @@ def run():
     # parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
     #                 action="store")
     # args = parser.parse_args()
-    start_server(2222, "")
+    start_server(2222, '0.0.0.0')
