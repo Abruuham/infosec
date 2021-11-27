@@ -79,11 +79,11 @@ def prepare_logger():
 
 class StingerPot(paramiko.ServerInterface):
 
-    def __init__(self, log_file_path):
-
+    def __init__(self, client_ip):
+        self.client_ip = client_ip
         # self.bind_ip = bind_ip
         # self.ports = ports
-        self.log_file_path = log_file_path
+        self.log_file_path = 'honeypot.log'
         # self.listener_threads = {}
         self.logger = prepare_logger()
 
