@@ -1,6 +1,5 @@
 import logging
-from socket import socket, timeout
-
+import socket
 import colors
 import threading
 import argparse
@@ -26,24 +25,9 @@ logging.basicConfig(level=logging.DEBUG,
                     filemode='a')
 
 
-def handle_command(cmd, chan, ip):
-    response = ''
-    if cmd.startswith('ls'):
-        response = 'users.txt'
-    elif cmd.startswith('pwd'):
-        response = '/home/root/'
+class StingerPot(paramiko.ServerInterface):
 
-    if response != '':
-        response = response + '\r\n'
-
-    chan.send(response)
-
-
-class StartServer(object):
-
-    def __init__(self, bind_ip, ports, log_file_path):
-        if len(ports) < 1:
-            raise Exception('No ports provided.')
+    def __init__(self, log_file_path):
 
         # self.bind_ip = bind_ip
         # self.ports = ports
@@ -52,150 +36,10 @@ class StartServer(object):
         self.logger = self.prepare_logger()
 
         self.logger.info('Honeypot initializing...')
-        self.logger.info('Ports: %s' % self.ports)
+        # self.logger.info('Ports: %s' % self.ports)
         self.logger.info('Log file path: %s' % self.log_file_path)
 
         self.event = threading.Event()
-
-    def prepare_logger(self):
-
-        logger = logging.getLogger(__name__)
-
-        # Adding Console Handler
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
-        logger.addHandler(console_handler)
-        return logger
-
-    def handle_connection(self, client, addr):
-        client_ip = addr[0]
-        logging.info('New connection from: {}'.format(client_ip))
-
-        try:
-            transport = paramiko.Transport(client)
-            transport.add_server_key(HOST_KEY)
-            transport.local_version = SSH_BANNER  # Change banner to appear more convincing
-            server = StingerPot(client_ip)
-            try:
-                transport.start_server(server=server)
-
-            except paramiko.SSHException:
-                print('*** SSH negotiation failed.')
-                raise Exception("SSH negotiation failed")
-
-            # wait for auth
-            chan = transport.accept(10)
-            if chan is None:
-                print('*** No channel (from ' + client_ip + ').')
-                raise Exception("No channel")
-
-            chan.settimeout(10)
-
-            if transport.remote_mac != '':
-                logging.info('Client mac ({}): {}'.format(client_ip, transport.remote_mac))
-
-            if transport.remote_compression != '':
-                logging.info('Client compression ({}): {}'.format(client_ip, transport.remote_compression))
-
-            if transport.remote_version != '':
-                logging.info('Client SSH version ({}): {}'.format(client_ip, transport.remote_version))
-
-            if transport.remote_cipher != '':
-                logging.info('Client SSH cipher ({}): {}'.format(client_ip, transport.remote_cipher))
-
-            server.event.wait(10)
-            if not server.event.is_set():
-                logging.info('** Client ({}): never asked for a shell'.format(client_ip))
-                raise Exception("No shell request")
-
-            try:
-                # chan.send("Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-128-generic x86_64)\r\n\r\n")
-                chan.send(open('motd', 'rb').read().decode('UTF-8'))
-                run = True
-                while run:
-                    chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
-                              colors.bcolors.COLOR['BLUE'] + '~' + colors.bcolors.COLOR['RESET_ALL'] + '# ')
-                    command = ""
-                    while not command.endswith("\r"):
-                        transport = chan.recv(1024)
-                        print(client_ip + "- received:", transport)
-                        # Echo input to psuedo-simulate a basic terminal
-                        if (
-                                transport != UP_KEY
-                                and transport != DOWN_KEY
-                                and transport != LEFT_KEY
-                                and transport != RIGHT_KEY
-                                and transport != BACK_KEY
-                        ):
-                            chan.send(transport)
-                            command += transport.decode("utf-8")
-
-                    chan.send("\r\n")
-                    command = command.rstrip()
-                    logging.info('Command receied ({}): {}'.format(client_ip, command))
-                    # detect_url(command, client_ip)
-
-                    if command == "exit":
-                        settings.addLogEntry("Connection closed (via exit command): " + client_ip + "\n")
-                        run = False
-
-                    else:
-                        self.handle_cmd(command, chan, client_ip)
-
-            except Exception as err:
-                print('!!! Exception: {}: {}'.format(err.__class__, err))
-                try:
-                    transport.close()
-                except Exception:
-                    pass
-
-            chan.close()
-
-        except Exception as err:
-            print('!!! Exception: {}: {}'.format(err.__class__, err))
-            try:
-                transport.close()
-            except Exception:
-                pass
-
-    def start_server(self, port, bind):
-        """Init and run the ssh server"""
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            sock.bind((bind, port))
-        except Exception as err:
-            print('*** Bind failed: {}'.format(err))
-            traceback.print_exc()
-            sys.exit(1)
-
-        threads = []
-        while True:
-            try:
-                sock.listen(100)
-                print('Listening for connection ...')
-                client, addr = sock.accept()
-            except Exception as err:
-                print('*** Listen/accept failed: {}'.format(err))
-                traceback.print_exc()
-            new_thread = threading.Thread(target=self.handle_connection, args=(client, addr))
-            new_thread.start()
-            threads.append(new_thread)
-
-        for thread in threads:
-            thread.join()
-
-    def run(self):
-        parser = argparse.ArgumentParser(description='Run an SSH honeypot server')
-        parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
-                        action="store")
-        parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
-                        action="store")
-        args = parser.parse_args()
-        self.start_server(args.port, args.bind)
-
-
-class StingerPot(paramiko.ServerInterface):
 
     def check_channel_request(self, kind, chanid):
         logging.info('client called check_channel_request ({}): {}'.format(
@@ -265,3 +109,154 @@ class StingerPot(paramiko.ServerInterface):
 #     for port in self.ports:
 #         self.listener_threads[port] = threading.Thread(target=self.start_new_listener_thread, args=(port,))
 #         self.listener_threads[port].start()
+
+
+def handle_command(cmd, chan, ip):
+    response = ''
+    if cmd.startswith('ls'):
+        response = 'users.txt'
+    elif cmd.startswith('pwd'):
+        response = '/home/root/'
+
+    if response != '':
+        response = response + '\r\n'
+
+    chan.send(response)
+
+
+def prepare_logger():
+
+    logger = logging.getLogger(__name__)
+
+    # Adding Console Handler
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+    logger.addHandler(console_handler)
+    return logger
+
+
+def handle_connection(client, addr):
+    client_ip = addr[0]
+    logging.info('New connection from: {}'.format(client_ip))
+
+    try:
+        transport = paramiko.Transport(client)
+        transport.add_server_key(HOST_KEY)
+        transport.local_version = SSH_BANNER  # Change banner to appear more convincing
+        server = StingerPot(client_ip)
+        try:
+            transport.start_server(server=server)
+
+        except paramiko.SSHException:
+            print('*** SSH negotiation failed.')
+            raise Exception("SSH negotiation failed")
+
+        # wait for auth
+        chan = transport.accept(10)
+        if chan is None:
+            print('*** No channel (from ' + client_ip + ').')
+            raise Exception("No channel")
+
+        chan.settimeout(10)
+
+        if transport.remote_mac != '':
+            logging.info('Client mac ({}): {}'.format(client_ip, transport.remote_mac))
+
+        if transport.remote_compression != '':
+            logging.info('Client compression ({}): {}'.format(client_ip, transport.remote_compression))
+
+        if transport.remote_version != '':
+            logging.info('Client SSH version ({}): {}'.format(client_ip, transport.remote_version))
+
+        if transport.remote_cipher != '':
+            logging.info('Client SSH cipher ({}): {}'.format(client_ip, transport.remote_cipher))
+
+        server.event.wait(10)
+        if not server.event.is_set():
+            logging.info('** Client ({}): never asked for a shell'.format(client_ip))
+            raise Exception("No shell request")
+
+        try:
+            # chan.send("Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-128-generic x86_64)\r\n\r\n")
+            chan.send(open('motd', 'rb').read().decode('UTF-8'))
+            run = True
+            while run:
+                chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
+                          colors.bcolors.COLOR['BLUE'] + '~' + colors.bcolors.COLOR['RESET_ALL'] + '# ')
+                command = ""
+                while not command.endswith("\r"):
+                    transport = chan.recv(1024)
+                    print(client_ip + "- received:", transport)
+                    # Echo input to psuedo-simulate a basic terminal
+                    if (
+                            transport != UP_KEY
+                            and transport != DOWN_KEY
+                            and transport != LEFT_KEY
+                            and transport != RIGHT_KEY
+                            and transport != BACK_KEY
+                    ):
+                        chan.send(transport)
+                        command += transport.decode("utf-8")
+
+                chan.send("\r\n")
+                command = command.rstrip()
+                logging.info('Command receied ({}): {}'.format(client_ip, command))
+                # detect_url(command, client_ip)
+
+                if command == "exit":
+                    settings.addLogEntry("Connection closed (via exit command): " + client_ip + "\n")
+                    run = False
+
+                else:
+                    self.handle_cmd(command, chan, client_ip)
+
+        except Exception as err:
+            print('!!! Exception: {}: {}'.format(err.__class__, err))
+            try:
+                transport.close()
+            except Exception:
+                pass
+
+        chan.close()
+
+    except Exception as err:
+        print('!!! Exception: {}: {}'.format(err.__class__, err))
+        try:
+            transport.close()
+        except Exception:
+            pass
+
+
+def start_server(port, bind):
+    """Init and run the ssh server"""
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.bind((bind, port))
+    except Exception as err:
+        print('*** Bind failed: {}'.format(err))
+        traceback.print_exc()
+        sys.exit(1)
+
+    threads = []
+    while True:
+        try:
+            sock.listen(100)
+            print('Listening for connection ...')
+            client, addr = sock.accept()
+        except Exception as err:
+            print('*** Listen/accept failed: {}'.format(err))
+            traceback.print_exc()
+        new_thread = threading.Thread(target=handle_connection, args=(client, addr))
+        new_thread.start()
+        threads.append(new_thread)
+
+
+def run():
+    parser = argparse.ArgumentParser(description='Run an SSH honeypot server')
+    parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
+                    action="store")
+    parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
+                    action="store")
+    args = parser.parse_args()
+    start_server(2222, "")

@@ -8,8 +8,8 @@ Options:
 """
 
 import configparser
-from stinger import Honeypot, StartServer
 import sys
+from . import run
 import colors
 
 
@@ -66,7 +66,5 @@ else:
         sys.exit(1)
 
     # Launch honeypot
-    server = StartServer(host, ports_list, log_file_path)
-    honeypot.run()
-
+    run()
 
