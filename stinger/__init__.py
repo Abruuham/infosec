@@ -186,7 +186,13 @@ class StartServer(object):
             thread.join()
 
     def run(self):
-        self.start_listening()
+        parser = argparse.ArgumentParser(description='Run an SSH honeypot server')
+        parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
+                        action="store")
+        parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
+                        action="store")
+        args = parser.parse_args()
+        self.start_server(args.port, args.bind)
 
 
 class StingerPot(paramiko.ServerInterface):
