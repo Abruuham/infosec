@@ -24,6 +24,16 @@ logging.basicConfig(level=logging.DEBUG,
                     filename='stinger.log',
                     filemode='a')
 
+def prepare_logger():
+
+    logger = logging.getLogger(__name__)
+
+    # Adding Console Handler
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+    logger.addHandler(console_handler)
+    return logger
+
 
 class StingerPot(paramiko.ServerInterface):
 
@@ -33,7 +43,7 @@ class StingerPot(paramiko.ServerInterface):
         # self.ports = ports
         self.log_file_path = log_file_path
         # self.listener_threads = {}
-        self.logger = self.prepare_logger()
+        self.logger = prepare_logger()
 
         self.logger.info('Honeypot initializing...')
         # self.logger.info('Ports: %s' % self.ports)
@@ -123,16 +133,6 @@ def handle_command(cmd, chan, ip):
 
     chan.send(response)
 
-
-def prepare_logger():
-
-    logger = logging.getLogger(__name__)
-
-    # Adding Console Handler
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.DEBUG)
-    logger.addHandler(console_handler)
-    return logger
 
 
 def handle_connection(client, addr):
@@ -253,10 +253,10 @@ def start_server(port, bind):
 
 
 def run():
-    parser = argparse.ArgumentParser(description='Run an SSH honeypot server')
-    parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
-                    action="store")
-    parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
-                    action="store")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(description='Run an SSH honeypot server')
+    # parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
+    #                 action="store")
+    # parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
+    #                 action="store")
+    # args = parser.parse_args()
     start_server(2222, "")
