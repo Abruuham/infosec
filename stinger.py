@@ -20,33 +20,32 @@ import paramiko
 from paramiko.py3compat import u
 import colors
 
-
 print(
     colors.bcolors.COLOR['YELLOW'] +
     '============================================================================\n' +
-    ' $$$$$$\  $$$$$$$$\  $$$$$$\ |$$\   $$\   /$$$$$$\   |$$$$$$$$\  |$$$$$$$\\ \n' +
-    '$$  __$$\ \__$$  __| \_$$  _||$$$\  $$ | |$$  __$$\  |$$  _____| |$$  __$$\\\n' +
-    '$$ /  \__|  $$  |      $$ |  |$$$$\ $$ | |$$ /  \__| |$$ |       |$$ |  $$ |\n' +
-    '\$$$$$$\    $$  |      $$ |  |$$ $$\$$ | |$$ |$$$$\  |$$$$$\     |$$$$$$$  |\n' +
-    ' \____$$\   $$  |      $$ |  |$$ \$$$$ | |$$ |\_$$ | |$$  __|    |$$  __$$< \n' +
-    '$$\   $$ |  $$  |      $$ |  |$$ |\$$$ | |$$ |  $$ | |$$ |       |$$ |  $$ |\n' +
-    '\$$$$$$  |  $$  |    $$$$$$\ |$$ | \$$ | \$$$$$$   | |$$$$$$$$\  |$$ |  $$ |\n' +
-    '\_______/   \___|    \_____|  \__|  \__|  \_______/  \________|   \__|  \__|\n' +
+    ' /$$$$$$\  $$$$$$$$\ $$$$$$\ |$$\   $$\   /$$$$$$\   |$$$$$$$$\  |$$$$$$$\\ \n' +
+    '|$$  __$$\ \__$$  __|\_$$ _| |$$$\  $$ | |$$  __$$\  |$$  _____| |$$  __$$\\\n' +
+    '|$$ /  \__|  |$$ |    |$$ |  |$$$$\ $$ | |$$ /  \__| |$$ |       |$$ |  $$ |\n' +
+    '\$$$$$$\     |$$ |    |$$ |  |$$ $$\$$ | |$$ |$$$$\  |$$$$$\     |$$$$$$$  |\n' +
+    ' \____$$\    |$$ |    |$$ |  |$$ \$$$$ | |$$ |\_$$ | |$$  __|    |$$  __$$< \n' +
+    '|$$\  $$ |   |$$ |    |$$ |  |$$ |\$$$ | |$$ |  $$ | |$$ |       |$$ |  $$ |\n' +
+    '\$$$$$$  |   |$$ |   $$$$$$\ |$$ | \$$ | \$$$$$$   | |$$$$$$$$\  |$$ |  $$ |\n' +
+    '\_______/    \___|   \_____|  \__|  \__|  \_______/  \________|   \__|  \__|\n' +
     '\n' +
-    '                             \     /                                        \n' +
-    '                         \    o ^ o    /                                    \n' +
-    '                           \ (     ) /                                      \n' +
-    '                ____________(%%%%%%%)____________                           \n' +
-    '               (     /   /  )%%%%%%%(  \   \     )                          \n' +
-    '               (___/___/__/           \__\___\___)                          \n' +
-    '                  (     /  /(%%%%%%%)\  \     )                             \n' +
-    '                   (__/___/ (%%%%%%%) \___\__)                              \n' +
-    '                           /(       )\\                                     \n' +
-    '                         /   (%%%%%)   \\                                   \n' +
-    '                              (%%%)                                         \n' +
-    '                               \ /                                          \n' +
-    '                                V                                           \n' +
-    '                                |                                           \n' +
+    '                                 \     /                                    \n' +
+    '                             \    o ^ o    /                                \n' +
+    '                               \ (     ) /                                  \n' +
+    '                    ____________(%%%%%%%)____________                       \n' +
+    '                   (     /   /  )%%%%%%%(  \   \     )                      \n' +
+    '                   (___/___/__/           \__\___\___)                      \n' +
+    '                      (     /  /(%%%%%%%)\  \     )                         \n' +
+    '                       (__/___/ (%%%%%%%) \___\__)                          \n' +
+    '                               /(       )\\                                 \n' +
+    '                             /   (%%%%%)   \\                               \n' +
+    '                                  (%%%)                                     \n' +
+    '                                   \ /                                      \n' +
+    '                                    V                                       \n' +
+    '                                    |                                       \n' +
     '============================================================================\n' +
     colors.bcolors.COLOR['RESET_ALL']
 )
@@ -67,7 +66,6 @@ logging.basicConfig(level=logging.DEBUG,
 
 
 def prepare_logger():
-
     logger = logging.getLogger(__name__)
 
     # Adding Console Handler
@@ -81,16 +79,10 @@ class StingerPot(paramiko.ServerInterface):
 
     def __init__(self, client_ip):
         self.client_ip = client_ip
-        # self.bind_ip = bind_ip
-        # self.ports = ports
         self.log_file_path = 'honeypot.log'
-        # self.listener_threads = {}
         self.logger = prepare_logger()
-
         self.logger.info('Honeypot initializing...')
-        # self.logger.info('Ports: %s' % self.ports)
         self.logger.info('Log file path: %s' % self.log_file_path)
-
         self.event = threading.Event()
 
     def check_channel_request(self, kind, chanid):
@@ -128,7 +120,7 @@ class StingerPot(paramiko.ServerInterface):
         command_text = str(command.decode("utf-8"))
 
         logging.info('client sent command via check_channel_exec_request ({}): {}'.format(
-            self.client_ip, username, command))
+            self.client_ip, command_text))
         return True
 
 
@@ -148,11 +140,11 @@ def handle_command(cmd, chan, ip):
 def handle_connection(client, addr):
     client_ip = addr[0]
     logging.info('New connection from: {}'.format(client_ip))
+    print('New connection from: {}'.format(client_ip))
 
     try:
         transport = paramiko.Transport(client)
         transport.add_server_key(HOST_KEY)
-        # transport.local_version = SSH_BANNER  # Change banner to appear more convincing
         server = StingerPot(client_ip)
         try:
             transport.start_server(server=server)
@@ -167,7 +159,7 @@ def handle_connection(client, addr):
             print('*** No channel (from ' + client_ip + ').')
             raise Exception("No channel")
 
-        chan.settimeout(10)
+        chan.settimeout(10800)
 
         if transport.remote_mac != '':
             logging.info('Client mac ({}): {}'.format(client_ip, transport.remote_mac))
@@ -197,15 +189,15 @@ def handle_connection(client, addr):
                       "Kali GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent\r\n" +
                       "permitted by applicable law.\r\n" +
                       "Last login: " + date + " from " + str(client_ip) + "\r\n" +
-                      "┏━("+colors.bcolors.COLOR["RED"] + "Message from Kali developers" + colors.bcolors.COLOR["RESET_ALL"] + ")\r\n" +
+                      "┏━(" + colors.bcolors.COLOR["RED"] + "Message from Kali developers" +
+                      colors.bcolors.COLOR["RESET_ALL"] + ")\r\n" +
                       "┃\r\n" +
                       "┃ This is a minimal installation of Kali Linux, you likely\r\n" +
                       "┃ want to install supplementary tools. Learn how:\r\n" +
                       "┃ ⇒ https://www.kali.org/docs/troubleshooting/common-minimum-setup/\r\n" +
                       "┃\r\n" +
-                      "┗━(" + colors.bcolors.COLOR['GREY'] + "Run “touch ~/.hushlogin” to hide this message)" + colors.bcolors.COLOR['RESET_ALL'] + "\r\n")
-
-            # chan.send(open('motd', 'rb').read().decode('UTF-8'))
+                      "┗━(" + colors.bcolors.COLOR['GREY'] + "Run “touch ~/.hushlogin” to hide this message)" +
+                      colors.bcolors.COLOR['RESET_ALL'] + "\r\n")
 
             run = True
             while run:
@@ -214,8 +206,7 @@ def handle_connection(client, addr):
                 command = ""
                 while not command.endswith("\r"):
                     transport = chan.recv(1024)
-                    print(client_ip + "- received:", transport)
-                    # Echo input to psuedo-simulate a basic terminal
+                    # Echo input to pseudo-simulate a basic terminal
                     if (
                             transport != UP_KEY
                             and transport != DOWN_KEY
@@ -229,11 +220,11 @@ def handle_connection(client, addr):
                 chan.send("\r\n")
                 command = command.rstrip()
                 logging.info('Command received ({}): {}'.format(client_ip, command))
+                print('Command received ({}): {}'.format(client_ip, command))
                 # detect_url(command, client_ip)
 
                 if command == "exit":
-                    # settings.addLogEntry("Connection closed (via exit command): " + client_ip + "\n")
-                    chan.send('logout\r\n\r\nConnection to 192.168.1.242 closed')
+                    chan.send('logout\r\nConnection to 192.168.1.242 closed')
                     run = False
 
                 else:
@@ -282,37 +273,10 @@ def start_server(port, bind):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Run an SSH honeypot server')
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
-                    action="store")
+                        action="store")
     parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
-                    action="store")
+                        action="store")
     args = parser.parse_args()
     start_server(args.port, args.bind)
-
-
-# # Check arguments
-# if len(sys.argv) < 2 or sys.argv[1] in ['-h', '--help']:
-#     print(__doc__)
-#     sys.exit(1)
-# else:
-#     # Load config
-#     config_file_path = 'honeypot.ini'
-#     config = configparser.ConfigParser()
-#     config.read(config_file_path)
-#
-#     ports = config.get('default', 'ports', raw=True, fallback='22,80,443,8080,8888,9999,3306')
-#     host = config.get('default', 'host', raw=True, fallback='0.0.0.0')
-#     log_file_path = config.get('default', 'logfile', raw=True, fallback='/var/log/honeypot.log')
-#
-#     # Double check ports provided
-#     ports_list = []
-#     try:
-#         ports_list = ports.split(',')
-#     except Exception as e:
-#         print('[-] Error parsing ports: %s,\nExiting', ports)
-#         sys.exit(1)
-#
-#     # Launch honeypot
-#     run()
-#
