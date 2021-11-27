@@ -134,7 +134,6 @@ def handle_command(cmd, chan, ip):
     chan.send(response)
 
 
-
 def handle_connection(client, addr):
     client_ip = addr[0]
     logging.info('New connection from: {}'.format(client_ip))
@@ -177,8 +176,8 @@ def handle_connection(client, addr):
             raise Exception("No shell request")
 
         try:
-            # chan.send("Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-128-generic x86_64)\r\n\r\n")
-            chan.send(open('motd', 'rb').read().decode('UTF-8'))
+            chan.send("Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-128-generic x86_64)\r\n\r\n")
+            # chan.send(open('motd', 'rb').read().decode('UTF-8'))
             run = True
             while run:
                 chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
