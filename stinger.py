@@ -197,15 +197,13 @@ def handle_connection(client, addr):
                       "Kali GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent\n" +
                       "permitted by applicable law.\n" +
                       "Last login: " + date + " from " + str(client_ip) + "\n" +
-                      "┏━("+colors.bcolors.COLOR["RED"] + "Message from Kali developers" +
-                      colors.bcolors.COLOR["RESET_ALL"] + ")\n" +
+                      "┏━("+colors.bcolors.COLOR["RED"] + "Message from Kali developers" + colors.bcolors.COLOR["RESET_ALL"] + ")\n" +
                       "┃\n" +
                       "┃ This is a minimal installation of Kali Linux, you likely\n" +
                       "┃ want to install supplementary tools. Learn how:\n" +
                       "┃ ⇒ https://www.kali.org/docs/troubleshooting/common-minimum-setup/\n" +
                       "┃\n" +
-                      "┗━(" + colors.bcolors.COLOR['GREY'] + "Run “touch ~/.hushlogin” to hide this message)" +
-                      colors.bcolors.COLOR['RESET_ALL'] + "\n")
+                      "┗━(" + colors.bcolors.COLOR['GREY'] + "Run “touch ~/.hushlogin” to hide this message)" + colors.bcolors.COLOR['RESET_ALL'] + "\n")
 
             # chan.send(open('motd', 'rb').read().decode('UTF-8'))
 
