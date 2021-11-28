@@ -50,7 +50,7 @@ class Command_adduser():
     username: Optional[str] = None
 
     def start(self):
-        # self.item = 0
+        self.item = 0
         # for arg in self.args:
         #     if arg.startswith("-") or arg.isdigit():
         #         continue
