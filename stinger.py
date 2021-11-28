@@ -12,7 +12,7 @@ from twisted.conch.insults import insults
 from twisted.protocols.policies import TimeoutMixin
 from twisted.python import failure, log
 
-from commands import __all__
+from commands.adduser import Command_adduser
 
 
 import os
@@ -132,8 +132,8 @@ def handle_command(cmd, chan, ip):
     elif cmd.startswith('pwd'):
         response = '/home/root/'
     elif cmd.startswith('adduser'):
-        adduser.start()
-
+        t = Command_adduser()
+        t.start()
     if response != '':
         response = response + '\r\n'
 
