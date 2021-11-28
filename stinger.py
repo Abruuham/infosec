@@ -7,7 +7,6 @@ import argparse
 import time
 import sys
 import traceback
-import location
 from binascii import hexlify
 import paramiko
 from paramiko.py3compat import u
@@ -134,8 +133,6 @@ def handle_connection(client, addr):
     client_ip = addr[0]
     logging.info('New connection from: {}'.format(client_ip))
     print('New connection from: {}'.format(client_ip))
-    loc = location.IPInfo(client_ip)
-    print(loc.get_location())
 
     try:
         transport = paramiko.Transport(client)

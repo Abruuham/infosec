@@ -20,7 +20,5 @@ setup(
     install_requires=[
         'twisted',
         'paramiko',
-        'ipinfo',
-        'yaml'
     ]
 )
