@@ -71,10 +71,10 @@ class StingerPot(paramiko.ServerInterface):
 
     def __init__(self, client_ip):
         self.client_ip = client_ip
-        self.log_file_path = 'honeypot.log'
+        self.log_file_path = 'stinger.log'
         self.logger = prepare_logger()
-        self.logger.info('Honeypot initializing...')
-        self.logger.info('Log file path: %s' % self.log_file_path)
+        self.logger.info('[*] Honeypot initializing...')
+        self.logger.info('[*] Log file path: %s' % self.log_file_path)
         self.event = threading.Event()
 
     def check_channel_request(self, kind, chanid):
@@ -132,7 +132,7 @@ def handle_command(cmd, chan, ip):
 def handle_connection(client, addr):
     client_ip = addr[0]
     logging.info('New connection from: {}'.format(client_ip))
-    print('New connection from: {}'.format(client_ip))
+    print('[*] New connection from: {}'.format(client_ip))
 
     try:
         transport = paramiko.Transport(client)
@@ -215,7 +215,7 @@ def handle_connection(client, addr):
                 chan.send("\r\n")
                 command = command.rstrip()
                 logging.info('Command received ({}): {}'.format(client_ip, command))
-                print('Command received ({}): {}'.format(client_ip, command))
+                print('[*] Command received ({}): {}'.format(client_ip, command))
                 # detect_url(command, client_ip)
 
                 if command == "exit":
@@ -248,6 +248,7 @@ def start_server(port, bind):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind((bind, port))
+        print(socket.gethostbyname(socket.gethostname()))
     except Exception as err:
         print('*** Bind failed: {}'.format(err))
         traceback.print_exc()
