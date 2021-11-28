@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-
-Usage:
-    honeypot.py <config_file_path>
-Options:
-    <config_file_path>               Path to config options .ini file.
-    -h --help                        Show this screen.
-"""
 
 import logging
 import socket
@@ -86,27 +78,27 @@ class StingerPot(paramiko.ServerInterface):
         self.event = threading.Event()
 
     def check_channel_request(self, kind, chanid):
-        logging.info('client called check_channel_request ({}): {}'.format(
-            self.client_ip, kind))
+        # logging.info('client called check_channel_request ({}): {}'.format(
+        #     self.client_ip, kind))
         if kind == 'session':
             return paramiko.OPEN_SUCCEEDED
 
     def get_allowed_auths(self, username):
-        logging.info('client called get_allowed_auths ({}) with username {}'.format(
-            self.client_ip, username))
-        return "publickey,password"
+        # logging.info('client called get_allowed_auths ({}) with username {}'.format(
+        #     self.client_ip, username))
+        return "publickey, password"
 
     def check_auth_publickey(self, username, key):
-        fingerprint = u(hexlify(key.get_fingerprint()))
-        logging.info(
-            'client public key ({}): username: {}, key name: {}, md5 fingerprint: {}, base64: {}, bits: {}'.format(
-                self.client_ip, username, key.get_name(), fingerprint, key.get_base64(), key.get_bits()))
+        # fingerprint = u(hexlify(key.get_fingerprint()))
+        # logging.info(
+        #     'client public key ({}): username: {}, key name: {}, md5 fingerprint: {}, base64: {}, bits: {}'.format(
+        #         self.client_ip, username, key.get_name(), fingerprint, key.get_base64(), key.get_bits()))
         return paramiko.AUTH_SUCCESSFUL
 
     def check_auth_password(self, username, password):
         # Accept all passwords as valid by default
-        logging.info('new client credentials ({}): username: {}, password: {}'.format(
-            self.client_ip, username, password))
+        # logging.info('new client credentials ({}): username: {}, password: {}'.format(
+        #     self.client_ip, username, password))
         return paramiko.AUTH_SUCCESSFUL
 
     def check_channel_shell_request(self, channel):
@@ -117,10 +109,10 @@ class StingerPot(paramiko.ServerInterface):
         return True
 
     def check_channel_exec_request(self, channel, command):
-        command_text = str(command.decode("utf-8"))
-
-        logging.info('client sent command via check_channel_exec_request ({}): {}'.format(
-            self.client_ip, command_text))
+        # command_text = str(command.decode("utf-8"))
+        #
+        # logging.info('client sent command via check_channel_exec_request ({}): {}'.format(
+        #     self.client_ip, command_text))
         return True
 
 
@@ -212,10 +204,13 @@ def handle_connection(client, addr):
                             and transport != DOWN_KEY
                             and transport != LEFT_KEY
                             and transport != RIGHT_KEY
-                            and transport != BACK_KEY
+                            # and transport != BACK_KEY
                     ):
                         chan.send(transport)
                         command += transport.decode("utf-8")
+                    elif transport == BACK_KEY:
+                        chan.send(transport)
+                        command += transport.decode('utf-8')[:-1]
 
                 chan.send("\r\n")
                 command = command.rstrip()
@@ -224,7 +219,7 @@ def handle_connection(client, addr):
                 # detect_url(command, client_ip)
 
                 if command == "exit":
-                    chan.send('logout\r\nConnection to 192.168.1.242 closed')
+                    chan.send('logout\r\n')
                     run = False
 
                 else:
@@ -273,7 +268,7 @@ def start_server(port, bind):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description="Stinger SSH Honeypot")
     parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
                         action="store")
     parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
