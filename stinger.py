@@ -210,7 +210,7 @@ def handle_connection(client, addr):
                         command += transport.decode("utf-8")
                     elif transport == BACK_KEY:
                         chan.send(transport)
-                        command += transport.decode('utf-8')[:-1]
+                        command = transport.decode('utf-8')[:-1]
 
                 chan.send("\r\n")
                 command = command.rstrip()
