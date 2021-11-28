@@ -7,6 +7,14 @@ import argparse
 import time
 import sys
 import traceback
+
+from twisted.conch.insults import insults
+from twisted.protocols.policies import TimeoutMixin
+from twisted.python import failure, log
+
+from commands import __all__
+
+
 import os
 from binascii import hexlify
 import paramiko
@@ -246,11 +254,10 @@ def handle_connection(client, addr):
 def start_server(port, bind):
     """Init and run the ssh server"""
     try:
+        print('Listening for connection ...')
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind((bind, port))
-        print(os.popen('ip addr show eth0 | grep "<\inet\>" | awk \'{ print $2 }\' | awk -F "/" \'{ print $1 }\'').read().strip())
-
     except Exception as err:
         print('*** Bind failed: {}'.format(err))
         traceback.print_exc()
@@ -260,7 +267,6 @@ def start_server(port, bind):
     while True:
         try:
             sock.listen(100)
-            print('Listening for connection ...')
             client, addr = sock.accept()
         except Exception as err:
             print('*** Listen/accept failed: {}'.format(err))
@@ -271,6 +277,29 @@ def start_server(port, bind):
 
 
 if __name__ == '__main__':
+
+    commands = {}
+
+    for c in __all__:
+        try:
+            module = __import__(
+                f'commands.{c}', globals(), locals(), ['commands']
+            )
+            commands.update(module.commands)
+        except Exception as e:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            log.error(
+                "Failed to import command {}: {}: {}".format(
+                    c,
+                    e,
+                    "".join(
+                        traceback.format_exception(exc_type, exc_value, exc_traceback)
+                    ),
+                )
+            )
+
+    print(commands)
+
     parser = argparse.ArgumentParser(description="Stinger SSH Honeypot")
     parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
                         action="store")
