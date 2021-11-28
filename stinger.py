@@ -11,7 +11,7 @@ from commands import adduser
 from twisted.conch.insults import insults
 from twisted.protocols.policies import TimeoutMixin
 from twisted.python import failure, log
-
+from commands import __all__
 from commands.adduser import Command_adduser
 
 

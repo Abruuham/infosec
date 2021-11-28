@@ -50,16 +50,16 @@ class Command_adduser():
     username: Optional[str] = None
 
     def start(self):
-        self.item = 0
-        for arg in self.args:
-            if arg.startswith("-") or arg.isdigit():
-                continue
-            self.username = arg
-            break
-        if self.username is None:
-            self.write("adduser: Only one or two names allowed.\n")
-            self.exit()
-            return
+        # self.item = 0
+        # for arg in self.args:
+        #     if arg.startswith("-") or arg.isdigit():
+        #         continue
+        #     self.username = arg
+        #     break
+        # if self.username is None:
+        #     self.write("adduser: Only one or two names allowed.\n")
+        #     self.exit()
+        #     return
 
         self.do_output()
 
