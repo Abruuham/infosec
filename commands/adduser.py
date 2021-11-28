@@ -49,6 +49,12 @@ class Command_adduser():
     ]
     username: Optional[str] = None
 
+    def write(self, data: str) -> None:
+        """
+        Write a string to the user on stdout
+        """
+        self.writefn(data.encode("utf8"))
+
     def start(self):
         self.item = 0
         # for arg in self.args:
