@@ -7,7 +7,7 @@ import argparse
 import time
 import sys
 import traceback
-
+from commands import adduser
 from twisted.conch.insults import insults
 from twisted.protocols.policies import TimeoutMixin
 from twisted.python import failure, log
@@ -131,6 +131,8 @@ def handle_command(cmd, chan, ip):
         response = 'users.txt'
     elif cmd.startswith('pwd'):
         response = '/home/root/'
+    elif cmd.startswith('adduser'):
+        adduser.start()
 
     if response != '':
         response = response + '\r\n'

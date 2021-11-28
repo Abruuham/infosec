@@ -8,14 +8,13 @@ from typing import Optional
 
 from twisted.internet import reactor  # type: ignore
 
-from cowrie.shell.command import HoneyPotCommand
 
 commands = {}
 
 O_O, O_Q, O_P = 1, 2, 3
 
 
-class Command_adduser(HoneyPotCommand):
+class Command_adduser():
     item: int
     output: list[tuple[int, str]] = [
         (O_O, "Adding user `%(username)s' ...\n"),
