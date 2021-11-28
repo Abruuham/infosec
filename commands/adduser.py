@@ -53,7 +53,7 @@ class Command_adduser():
         """
         Write a string to the user on stdout
         """
-        self.writefn(data.encode("utf8"))
+        print(data.encode("utf8"))
 
     def start(self):
         self.item = 0
