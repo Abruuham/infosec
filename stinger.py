@@ -7,6 +7,7 @@ import argparse
 import time
 import sys
 import traceback
+import os
 from binascii import hexlify
 import paramiko
 from paramiko.py3compat import u
@@ -248,7 +249,8 @@ def start_server(port, bind):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind((bind, port))
-        print(socket.gethostbyname(socket.gethostname()))
+        print(os.popen('ip addr show eth0 | grep "<\inet\>" | awk \'{ print $2 }\' | awk -F "/" \'{ print $1 }\'').read().strip())
+
     except Exception as err:
         print('*** Bind failed: {}'.format(err))
         traceback.print_exc()
