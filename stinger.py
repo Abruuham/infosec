@@ -7,19 +7,12 @@ import argparse
 import time
 import sys
 import traceback
-from commands import adduser
-from twisted.conch.insults import insults
-from twisted.protocols.policies import TimeoutMixin
-from twisted.python import failure, log
+import paramiko
+import colors
+
+from twisted.python import log
 from commands import __all__
 from commands.adduser import Command_adduser
-
-
-import os
-from binascii import hexlify
-import paramiko
-from paramiko.py3compat import u
-import colors
 
 print(
     colors.bcolors.COLOR['YELLOW'] +
@@ -201,7 +194,7 @@ def handle_connection(client, addr):
                     passwd += p.decode("utf-8")
 
             date = time.ctime()
-            chan.send("Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
+            chan.send("\r\n\r\nLinux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
             chan.send("The programs included with the Kali GNU/Linux system are free software;\r\n" +
                       "the exact distribution terms for each program are described in the\r\n" +
                       "individual files in /usr/share/doc/*/copyright.\r\n\r\n" +
