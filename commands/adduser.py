@@ -72,6 +72,8 @@ class Command_adduser():
             return 'yolo'
         if self.item == 21:
             self.lineReceived(input())
+            self.exit()
+            return
         if self.item == len(self.output):
             self.item = 7
             self.schedule_next()
