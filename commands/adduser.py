@@ -77,10 +77,10 @@ class Command_adduser():
         if line[0] == O_P:
             print('here: ' + str(self.item))
             self.password_input = True
-            return
+
         if line[0] == O_Q:
             print('other here: ' + str(self.item))
-            return
+
         else:
             self.item += 1
             self.schedule_next()
