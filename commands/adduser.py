@@ -7,8 +7,7 @@ import random
 from typing import Optional
 
 from twisted.internet import reactor  # type: ignore
-
-
+import stinger
 commands = {}
 
 O_O, O_Q, O_P = 1, 2, 3
@@ -17,18 +16,18 @@ O_O, O_Q, O_P = 1, 2, 3
 class Command_adduser():
     item: int
     output: list[tuple[int, str]] = [
-        (O_O, "Adding user `%(username)s' ...\n"),
-        (O_O, "Adding new group `%(username)s' (1001) ...\n"),
+        (O_O, "Adding user `%(username)s' ..."),
+        (O_O, "Adding new group `%(username)s' (1001) ..."),
         (
             O_O,
-            "Adding new user `%(username)s' (1001) with group `%(username)s' ...\n",
+            "Adding new user `%(username)s' (1001) with group `%(username)s' ...",
         ),
-        (O_O, "Creating home directory `/home/%(username)s' ...\n"),
-        (O_O, "Copying files from `/etc/skel' ...\n"),
+        (O_O, "Creating home directory `/home/%(username)s' ..."),
+        (O_O, "Copying files from `/etc/skel' ..."),
         (O_P, "Password: "),
         (O_P, "Password again: "),
-        (O_O, "\nChanging the user information for %(username)s\n"),
-        (O_O, "Enter the new value, or press ENTER for the default\n"),
+        (O_O, "Changing the user information for %(username)s"),
+        (O_O, "Enter the new value, or press ENTER for the default"),
         (O_Q, "        Username []: "),
         (O_Q, "        Full Name []: "),
         (O_Q, "        Room Number []: "),
@@ -41,10 +40,10 @@ class Command_adduser():
         (O_Q, "        Favorite movie []: "),
         (O_Q, "        Other []: "),
         (O_Q, "Is the information correct? [Y/n] "),
-        (O_O, "ERROR: Some of the information you entered is invalid\n"),
-        (O_O, "Deleting user `%(username)s' ...\n"),
-        (O_O, "Deleting group `%(username)s' (1001) ...\n"),
-        (O_O, "Deleting home directory `/home/%(username)s' ...\n"),
+        (O_O, "ERROR: Some of the information you entered is invalid"),
+        (O_O, "Deleting user `%(username)s' ..."),
+        (O_O, "Deleting group `%(username)s' (1001) ..."),
+        (O_O, "Deleting home directory `/home/%(username)s' ..."),
         (O_Q, "Try again? [Y/n] "),
     ]
     username: Optional[str] = None
@@ -77,9 +76,11 @@ class Command_adduser():
         line = self.output[self.item]
         self.write(line[1] % {"username": self.username})
         if line[0] == O_P:
+            print('here: ' + str(self.item))
             self.password_input = True
             return
         if line[0] == O_Q:
+            print('other here: ' + str(self.item))
             return
         else:
             self.item += 1
@@ -100,7 +101,7 @@ class Command_adduser():
         else:
             self.item += 1
         self.schedule_next()
-        self.protocol.password_input = False
+        self.password_input = False
 
 
 commands["/usr/sbin/adduser"] = Command_adduser
