@@ -68,9 +68,9 @@ class Command_adduser():
         self.do_output()
 
     def do_output(self):
-        if self.item == 26:
+        if self.item == 27:
             return
-        if self.item == 20:
+        if self.item == 26:
             self.lineReceived(input())
         if self.item == len(self.output):
             self.item = 7
