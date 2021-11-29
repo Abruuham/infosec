@@ -57,6 +57,7 @@ class Command_adduser():
 
     def start(self, args):
         self.item = 0
+        self.password_input = False
         if args.startswith("-") or args.isdigit():
             pass
         self.username = args
@@ -76,6 +77,7 @@ class Command_adduser():
         line = self.output[self.item]
         self.write(line[1] % {"username": self.username})
         if line[0] == O_P:
+            self.password_input = True
             return
         if line[0] == O_Q:
             return
