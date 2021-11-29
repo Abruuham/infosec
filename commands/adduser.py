@@ -55,8 +55,10 @@ class Command_adduser():
         Write a string to the user on stdout
         """
         if self.item == 5 or self.item == 6:
+            self.chan.send(data)
             self.chan.recv(1024)
         elif self.item >= 9 and self.item <= 20:
+            self.chan.send(data)
             self.chan.recv(1024)
         else:
             self.chan.send(data)
