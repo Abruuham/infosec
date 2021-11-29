@@ -63,13 +63,13 @@ class Command_adduser():
         if self.username is None:
             self.write("adduser: Only one or two names allowed.\n")
             self.exit()
-            return
+            return ''
 
         self.do_output()
 
     def do_output(self):
         if self.item == 26:
-            return
+            return ''
         if self.item == 21:
             self.lineReceived(input())
         if self.item == len(self.output):
@@ -93,7 +93,7 @@ class Command_adduser():
     def lineReceived(self, line):
         if self.item + 1 == len(self.output) and line.strip() in ("n", "no"):
             self.exit()
-            return
+            return ''
         elif self.item == 20 and line.strip() not in ("y", "yes"):
             self.item = 7
             self.write("Ok, starting over\n")
