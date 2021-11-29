@@ -55,14 +55,15 @@ class Command_adduser():
         Write a string to the user on stdout
         """
         if self.item == 5 or self.item == 6:
-            input(data)
+            self.chan.recv(1024)
         elif self.item >= 9 and self.item <= 20:
-            input(data)
+            self.chan.recv(1024)
         else:
             self.chan.send(data)
 
-    def start(self, args, chan):
+    def start(self, args, chan, transport):
         self.chan = chan
+        self.transport = transport
         self.item = 0
         self.password_input = False
         if args.startswith("-") or args.isdigit():

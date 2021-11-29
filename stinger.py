@@ -125,7 +125,7 @@ class StingerPot(paramiko.ServerInterface):
         return True
 
 
-def handle_command(cmd, chan, ip):
+def handle_command(cmd, chan,transport, ip):
     response = ''
     if cmd.startswith('ls'):
         response = 'users.txt'
@@ -135,7 +135,7 @@ def handle_command(cmd, chan, ip):
         y = cmd.split(' ')
         print(y)
         t = Command_adduser()
-        response = t.start(y[1], chan)
+        response = t.start(y[1], chan, transport)
     if response != '':
         response = response + '\r\n'
     if response is None:
@@ -238,7 +238,7 @@ def handle_connection(client, addr):
                     run = False
 
                 else:
-                    handle_command(command, chan, client_ip)
+                    handle_command(command, chan, transport, client_ip)
 
         except Exception as err:
             print('!!! Exception: {}: {}'.format(err.__class__, err))
