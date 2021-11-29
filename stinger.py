@@ -209,6 +209,8 @@ def handle_connection(client, addr):
                 chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
                           colors.bcolors.COLOR['BLUE'] + '~' + colors.bcolors.COLOR['RESET_ALL'] + '# ')
                 command = ""
+                if command is None:
+                    command = ""
                 while not command.endswith("\r"):
                     transport = chan.recv(1024)
                     # Echo input to pseudo-simulate a basic terminal
