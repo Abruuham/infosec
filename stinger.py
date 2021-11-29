@@ -133,6 +133,7 @@ def handle_command(cmd, chan, ip):
         response = '/home/root/'
     elif cmd.startswith('adduser'):
         y = cmd.split(' ')
+        print(y)
         t = Command_adduser()
         t.start(y[1])
     if response != '':

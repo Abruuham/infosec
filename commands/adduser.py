@@ -53,15 +53,13 @@ class Command_adduser():
         """
         Write a string to the user on stdout
         """
-        print(data.encode("utf8"))
+        print(data)
 
     def start(self, args):
         self.item = 0
-        for arg in args:
-            if arg.startswith("-") or arg.isdigit():
-                continue
-            self.username = arg
-            break
+        if args.startswith("-") or args.isdigit():
+            pass
+        self.username = args
         if self.username is None:
             self.write("adduser: Only one or two names allowed.\n")
             self.exit()
@@ -78,7 +76,7 @@ class Command_adduser():
         line = self.output[self.item]
         self.write(line[1] % {"username": self.username})
         if line[0] == O_P:
-            self.protocol.password_input = True
+            print('here')
             return
         if line[0] == O_Q:
             return
