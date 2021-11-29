@@ -64,40 +64,33 @@ class Command_adduser():
         if self.username is None:
             self.write("adduser: Only one or two names allowed.\n")
             self.exit()
-            return 'hehe'
+            return
 
         self.do_output()
 
     def do_output(self):
-        if self.item == 26:
-            return self.item
-        if self.item == 21:
-            self.lineReceived(input())
-            return
-        if self.item == len(self.output):
-            self.item = 7
-            self.schedule_next()
+        while self.item < 26:
+            if self.item == len(self.output):
+                self.item = 7
+                self.schedule_next()
 
-        line = self.output[self.item]
-        self.write(line[1] % {"username": self.username})
-        if line[0] == O_P:
-            pass
-        if line[0] == O_Q:
+            line = self.output[self.item]
+            self.write(line[1] % {"username": self.username})
+            if line[0] == 5 or line[0] == 6:
+                input()
+            if line[0] <= 7 and line >= 20:
+                input
+
             self.item += 1
-            self.schedule_next()
-        else:
-            self.item += 1
-            self.schedule_next()
+                # self.schedule_next()
 
     def schedule_next(self):
         self.scheduled = reactor.callLater(0.5 + random.random() * 1, self.do_output())
 
     def lineReceived(self, line):
-        if line == 'y' or line == 'yes':
-            return
         if self.item + 1 == len(self.output) and line.strip() in ("n", "no"):
             self.exit()
-            return 'false'
+            return
         elif self.item == 20 and line.strip() not in ("y", "yes"):
             self.item = 7
             self.write("Ok, starting over\n")

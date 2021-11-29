@@ -139,7 +139,7 @@ def handle_command(cmd, chan, ip):
     if response != '':
         response = response + '\r\n'
     if response is None:
-        response = ""
+        print('hoha')
     chan.send(response)
 
 
