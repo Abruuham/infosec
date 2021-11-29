@@ -11,7 +11,7 @@ from twisted.internet import reactor  # type: ignore
 commands = {}
 
 O_O, O_Q, O_P = 1, 2, 3
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(1000000)
 
 class Command_adduser():
     item: int
@@ -68,6 +68,10 @@ class Command_adduser():
         self.do_output()
 
     def do_output(self):
+        if self.item == 26:
+            return
+        if self.item == 20:
+            self.lineReceived(input())
         if self.item == len(self.output):
             self.item = 7
             self.schedule_next()
