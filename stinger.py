@@ -132,8 +132,9 @@ def handle_command(cmd, chan, ip):
     elif cmd.startswith('pwd'):
         response = '/home/root/'
     elif cmd.startswith('adduser'):
+        y = cmd.split()
         t = Command_adduser()
-        t.start()
+        t.start(y[1])
     if response != '':
         response = response + '\r\n'
 
