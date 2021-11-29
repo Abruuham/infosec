@@ -76,9 +76,9 @@ class Command_adduser():
 
             line = self.output[self.item]
             self.write(line[1] % {"username": self.username})
-            if line[0] == 5 or line[0] == 6:
+            if self.item == 5 or self.item == 6:
                 input()
-            if line[0] <= 7 and line >= 20:
+            if self.item <= 7 and self.item >= 20:
                 input
 
             self.item += 1
