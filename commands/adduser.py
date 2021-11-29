@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import random
+
 from typing import Optional
 import sys
 
@@ -69,10 +70,9 @@ class Command_adduser():
 
     def do_output(self):
         if self.item == 26:
-            return 'yolo'
+            return self.item
         if self.item == 21:
             self.lineReceived(input())
-            self.exit()
             return
         if self.item == len(self.output):
             self.item = 7
@@ -107,9 +107,3 @@ class Command_adduser():
             self.item += 1
         self.schedule_next()
         self.password_input = False
-
-
-commands["/usr/sbin/adduser"] = Command_adduser
-commands["/usr/sbin/useradd"] = Command_adduser
-commands["adduser"] = Command_adduser
-commands["useradd"] = Command_adduser
