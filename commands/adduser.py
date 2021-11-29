@@ -7,7 +7,6 @@ import random
 from typing import Optional
 
 from twisted.internet import reactor  # type: ignore
-import stinger
 commands = {}
 
 O_O, O_Q, O_P = 1, 2, 3
