@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import random
+import time
 
 from typing import Optional
 import sys
@@ -53,7 +54,10 @@ class Command_adduser():
         """
         Write a string to the user on stdout
         """
-        print(data)
+        if self.item == 5:
+            input(data)
+        else:
+            print(data)
 
     def start(self, args):
         self.item = 0
@@ -72,14 +76,15 @@ class Command_adduser():
         while self.item < 26:
             if self.item == len(self.output):
                 self.item = 7
-                self.schedule_next()
+                # self.schedule_next()
 
             line = self.output[self.item]
             self.write(line[1] % {"username": self.username})
+            time.sleep(0.5 + random.random() * 1)
             if self.item == 5 or self.item == 6:
                 input()
             if self.item <= 7 and self.item >= 20:
-                input
+                input()
 
             self.item += 1
                 # self.schedule_next()
