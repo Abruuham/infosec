@@ -53,15 +53,10 @@ class Command_adduser():
         """
         Write a string to the user on stdout
         """
-        self.writefn(data.encode("utf8"))
-
-
-    def write_to_failed(self, data: bytes) -> None:
-        pass
+        print(data)
 
     def start(self, args):
         self.item = 0
-        self.writefn = self.write_to_failed
         if args.startswith("-") or args.isdigit():
             pass
         self.username = args
@@ -81,7 +76,6 @@ class Command_adduser():
         line = self.output[self.item]
         self.write(line[1] % {"username": self.username})
         if line[0] == O_P:
-            print('here')
             return
         if line[0] == O_Q:
             return
@@ -90,7 +84,9 @@ class Command_adduser():
             self.schedule_next()
 
     def schedule_next(self):
-        self.scheduled = reactor.callLater(0.5 + random.random() * 1, self.do_output)
+        rand = random.random() * 1
+        print('random num: ' + str(rand))
+        self.scheduled = reactor.callLater(0.5 + rand, self.do_output)
 
     def lineReceived(self, line):
         if self.item + 1 == len(self.output) and line.strip() in ("n", "no"):
