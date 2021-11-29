@@ -53,10 +53,15 @@ class Command_adduser():
         """
         Write a string to the user on stdout
         """
-        print(data)
+        self.writefn(data.encode("utf8"))
+
+
+    def write_to_failed(self, data: bytes) -> None:
+        pass
 
     def start(self, args):
         self.item = 0
+        self.writefn = self.write_to_failed
         if args.startswith("-") or args.isdigit():
             pass
         self.username = args
