@@ -84,9 +84,7 @@ class Command_adduser():
             self.schedule_next()
 
     def schedule_next(self):
-        rand = random.random() * 1
-        print('random num: ' + str(rand))
-        self.scheduled = reactor.callLater(0.5 + rand, self.do_output)
+        self.scheduled = reactor.callLater(0.5 + random.random() * 1, self.do_output())
 
     def lineReceived(self, line):
         if self.item + 1 == len(self.output) and line.strip() in ("n", "no"):

@@ -302,8 +302,6 @@ if __name__ == '__main__':
                 )
             )
 
-    print(commands)
-
     parser = argparse.ArgumentParser(description="Stinger SSH Honeypot")
     parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
                         action="store")
