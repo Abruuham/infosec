@@ -102,7 +102,7 @@ class StingerPot(paramiko.ServerInterface):
         # logging.info(
         #     'client public key ({}): username: {}, key name: {}, md5 fingerprint: {}, base64: {}, bits: {}'.format(
         #         self.client_ip, username, key.get_name(), fingerprint, key.get_base64(), key.get_bits()))
-        return paramiko.AUTH_SUCCESSFUL
+        return paramiko.AUTH_PARTIALLY_SUCCESSFUL
 
     def check_auth_password(self, username, password):
         # Accept all passwords as valid by default

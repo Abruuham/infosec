@@ -37,7 +37,7 @@ class Command_adduser():
         (O_O, "\r\nChanging the user information for %(username)s\r\n"),
         (O_O, "Enter the new value, or press ENTER for the default\r\n"),
         (O_Q, "\tUsername []: "),
-        (O_Q, "\t\r\nFull Name []: "),
+        (O_Q, "\n\tFull Name []: "),
         (O_Q, "\n\tRoom Number []: "),
         (O_Q, "\n\tWork Phone []: "),
         (O_Q, "\n\tHome Phone []: "),
