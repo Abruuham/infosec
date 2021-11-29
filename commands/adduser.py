@@ -12,6 +12,12 @@ import sys
 from twisted.internet import reactor  # type: ignore
 commands = {}
 
+UP_KEY = '\x1b[A'.encode()
+DOWN_KEY = '\x1b[B'.encode()
+RIGHT_KEY = '\x1b[C'.encode()
+LEFT_KEY = '\x1b[D'.encode()
+BACK_KEY = '\x7f'.encode()
+
 O_O, O_Q, O_P = 1, 2, 3
 sys.setrecursionlimit(1000000)
 
@@ -27,7 +33,7 @@ class Command_adduser():
         (O_O, "Creating home directory `/home/%(username)s' ...\r\n"),
         (O_O, "Copying files from `/etc/skel' ...\r\n"),
         (O_P, "Password: "),
-        (O_P, "Password again: "),
+        (O_P, "\r\nPassword again: "),
         (O_O, "\r\nChanging the user information for %(username)s\r\n"),
         (O_O, "Enter the new value, or press ENTER for the default\r\n"),
         (O_Q, "        Username []: "),
@@ -56,10 +62,35 @@ class Command_adduser():
         """
         if self.item == 5 or self.item == 6:
             self.chan.send(data)
-            self.chan.recv(1024)
+            command = ''
+            while not command.endswith("\r"):
+                transport = self.chan.recv(1024)
+                # Echo input to pseudo-simulate a basic terminal
+                if (
+                        transport != UP_KEY
+                        and transport != DOWN_KEY
+                        and transport != LEFT_KEY
+                        and transport != RIGHT_KEY
+                        and transport != BACK_KEY
+                ):
+                    self.chan.send(transport)
+                    command += transport.decode('utf-8')
+
         elif self.item >= 9 and self.item <= 20:
             self.chan.send(data)
-            self.chan.recv(1024)
+            command = ''
+            while not command.endswith("\r"):
+                transport = self.chan.recv(1024)
+                # Echo input to pseudo-simulate a basic terminal
+                if (
+                        transport != UP_KEY
+                        and transport != DOWN_KEY
+                        and transport != LEFT_KEY
+                        and transport != RIGHT_KEY
+                        and transport != BACK_KEY
+                ):
+                    self.chan.send(transport)
+                    command += transport.decode('utf-8')
         else:
             self.chan.send(data)
 
