@@ -5,12 +5,13 @@ from __future__ import annotations
 
 import random
 from typing import Optional
+import sys
 
 from twisted.internet import reactor  # type: ignore
 commands = {}
 
 O_O, O_Q, O_P = 1, 2, 3
-
+sys.setrecursionlimit(10000)
 
 class Command_adduser():
     item: int
@@ -70,17 +71,14 @@ class Command_adduser():
         if self.item == len(self.output):
             self.item = 7
             self.schedule_next()
-            return
 
         line = self.output[self.item]
         self.write(line[1] % {"username": self.username})
         if line[0] == O_P:
-            print('here: ' + str(self.item))
-            self.password_input = True
-
+            pass
         if line[0] == O_Q:
-            print('other here: ' + str(self.item))
-
+            self.item += 1
+            self.schedule_next()
         else:
             self.item += 1
             self.schedule_next()
