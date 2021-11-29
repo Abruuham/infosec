@@ -18,18 +18,18 @@ sys.setrecursionlimit(1000000)
 class Command_adduser():
     item: int
     output: list[tuple[int, str]] = [
-        (O_O, "Adding user `%(username)s' ..."),
-        (O_O, "Adding new group `%(username)s' (1001) ..."),
+        (O_O, "Adding user `%(username)s' ...\n"),
+        (O_O, "Adding new group `%(username)s' (1001) ...\n"),
         (
             O_O,
-            "Adding new user `%(username)s' (1001) with group `%(username)s' ...",
+            "Adding new user `%(username)s' (1001) with group `%(username)s' ...\n",
         ),
-        (O_O, "Creating home directory `/home/%(username)s' ..."),
-        (O_O, "Copying files from `/etc/skel' ..."),
+        (O_O, "Creating home directory `/home/%(username)s' ...\n"),
+        (O_O, "Copying files from `/etc/skel' ...\n"),
         (O_P, "Password: "),
         (O_P, "Password again: "),
-        (O_O, "Changing the user information for %(username)s"),
-        (O_O, "Enter the new value, or press ENTER for the default"),
+        (O_O, "\nChanging the user information for %(username)s\n"),
+        (O_O, "Enter the new value, or press ENTER for the default\n"),
         (O_Q, "        Username []: "),
         (O_Q, "        Full Name []: "),
         (O_Q, "        Room Number []: "),
@@ -42,10 +42,10 @@ class Command_adduser():
         (O_Q, "        Favorite movie []: "),
         (O_Q, "        Other []: "),
         (O_Q, "Is the information correct? [Y/n] "),
-        (O_O, "ERROR: Some of the information you entered is invalid"),
-        (O_O, "Deleting user `%(username)s' ..."),
-        (O_O, "Deleting group `%(username)s' (1001) ..."),
-        (O_O, "Deleting home directory `/home/%(username)s' ..."),
+        (O_O, "ERROR: Some of the information you entered is invalid\n"),
+        (O_O, "Deleting user `%(username)s' ...\n"),
+        (O_O, "Deleting group `%(username)s' (1001) ...\n"),
+        (O_O, "Deleting home directory `/home/%(username)s' ...\n"),
         (O_Q, "Try again? [Y/n] "),
     ]
     username: Optional[str] = None
