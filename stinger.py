@@ -126,13 +126,10 @@ def handle_command(cmd, chan,transport, ip):
         response = '/home/root/'
     elif cmd.startswith('adduser'):
         y = cmd.split(' ')
-        print(y)
         t = Command_adduser()
         response = t.start(y[1], chan, transport)
     if response != '':
         response = response + '\r\n'
-    if response is None:
-        print('hoha')
     chan.send(response)
 
 
