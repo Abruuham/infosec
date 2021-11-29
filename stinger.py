@@ -135,7 +135,7 @@ def handle_command(cmd, chan, ip):
         y = cmd.split(' ')
         print(y)
         t = Command_adduser()
-        response = t.start(y[1])
+        response = t.start(y[1], chan)
     if response != '':
         response = response + '\r\n'
     if response is None:

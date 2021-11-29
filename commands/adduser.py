@@ -59,9 +59,10 @@ class Command_adduser():
         elif self.item >= 9 and self.item <= 20:
             input(data)
         else:
-            print(data)
+            self.chan.send(data)
 
-    def start(self, args):
+    def start(self, args, chan):
+        self.chan = chan
         self.item = 0
         self.password_input = False
         if args.startswith("-") or args.isdigit():
