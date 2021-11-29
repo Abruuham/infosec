@@ -54,7 +54,9 @@ class Command_adduser():
         """
         Write a string to the user on stdout
         """
-        if self.item == 5:
+        if self.item == 5 or self.item == 6:
+            input(data)
+        elif self.item >= 9 and self.item <= 20:
             input(data)
         else:
             print(data)
@@ -79,13 +81,8 @@ class Command_adduser():
                 # self.schedule_next()
 
             line = self.output[self.item]
-            self.write(line[1] % {"username": self.username})
             time.sleep(0.5 + random.random() * 1)
-            if self.item == 5 or self.item == 6:
-                input()
-            if self.item <= 7 and self.item >= 20:
-                input()
-
+            self.write(line[1] % {"username": self.username})
             self.item += 1
                 # self.schedule_next()
 
