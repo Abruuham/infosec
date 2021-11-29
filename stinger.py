@@ -102,7 +102,7 @@ class StingerPot(paramiko.ServerInterface):
         # logging.info(
         #     'client public key ({}): username: {}, key name: {}, md5 fingerprint: {}, base64: {}, bits: {}'.format(
         #         self.client_ip, username, key.get_name(), fingerprint, key.get_base64(), key.get_bits()))
-        return paramiko.AUTH_PARTIALLY_SUCCESSFUL
+        return paramiko.AUTH_SUCCESSFUL
 
     def check_auth_password(self, username, password):
         # Accept all passwords as valid by default
@@ -187,6 +187,19 @@ def handle_connection(client, addr):
         # chan.send("root@localhost's password: "+colors.bcolors.COLOR['CLEAR'])
 
         try:
+            chan.send('root@192.168.1.242\'s password: ')
+            passwd = ''
+            while not passwd.endswith('\r'):
+                p = chan.recv(1024)
+                if (
+                        transport != UP_KEY
+                        and transport != DOWN_KEY
+                        and transport != LEFT_KEY
+                        and transport != RIGHT_KEY
+                        and transport != BACK_KEY
+                ):
+                    passwd += p.decode("utf-8")
+
             date = time.ctime()
             chan.send("Linux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
             chan.send("The programs included with the Kali GNU/Linux system are free software;\r\n" +
