@@ -91,6 +91,8 @@ class Command_adduser():
         self.scheduled = reactor.callLater(0.5 + random.random() * 1, self.do_output())
 
     def lineReceived(self, line):
+        if line == 'y' or line == 'yes':
+            return
         if self.item + 1 == len(self.output) and line.strip() in ("n", "no"):
             self.exit()
             return ''
