@@ -127,7 +127,8 @@ def handle_command(cmd, chan,transport, ip):
     elif cmd.startswith('adduser'):
         y = cmd.split(' ')
         t = Command_adduser()
-        response = t.start(y[1], chan, transport)
+        l = t.start(y[1], chan, transport)
+        print(l)
     if response != '':
         response = response + '\r\n'
     chan.send(response)

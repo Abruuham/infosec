@@ -110,6 +110,7 @@ class Command_adduser():
             return
 
         self.do_output()
+        return 3
 
     def do_output(self):
         while self.item < 26 and self.complete is not True:
@@ -123,6 +124,7 @@ class Command_adduser():
             self.item += 1
                 # self.schedule_next()
         print('what')
+        return 2
 
     def schedule_next(self):
         self.scheduled = reactor.callLater(0.5 + random.random() * 1, self.do_output())
