@@ -76,7 +76,7 @@ class Command_adduser():
                     self.chan.send(transport)
                     command += transport.decode('utf-8')
 
-        elif self.item >= 9 and self.item <= 20:
+        elif 9 <= self.item <= 20:
             self.chan.send(data)
             command = ''
             while not command.endswith("\r"):
@@ -91,6 +91,8 @@ class Command_adduser():
                 ):
                     self.chan.send(transport)
                     command += transport.decode('utf-8')
+                    if self.item == 20:
+                        self.lineReceived(command)
         else:
             self.chan.send(data)
 
@@ -126,14 +128,12 @@ class Command_adduser():
 
     def lineReceived(self, line):
         if self.item + 1 == len(self.output) and line.strip() in ("n", "no"):
-            self.exit()
             return
-        elif self.item == 20 and line.strip() not in ("y", "yes"):
+        elif self.item == 20 and line not in ("y", "yes"):
             self.item = 7
             self.write("Ok, starting over\n")
         elif not len(line) and self.output[self.item][0] == O_Q:
             self.write("Must enter a value!\n")
         else:
             self.item += 1
-        self.schedule_next()
-        self.password_input = False
+            return
