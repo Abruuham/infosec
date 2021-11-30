@@ -73,7 +73,6 @@ class Command_adduser():
                         and transport != RIGHT_KEY
                         and transport != BACK_KEY
                 ):
-                    self.chan.send(transport)
                     command += transport.decode('utf-8')
 
         elif 9 <= self.item <= 20:
@@ -98,6 +97,7 @@ class Command_adduser():
 
     def start(self, args, chan, transport):
         self.chan = chan
+        self.complete = False
         self.transport = transport
         self.item = 0
         self.password_input = False
@@ -112,7 +112,7 @@ class Command_adduser():
         self.do_output()
 
     def do_output(self):
-        while self.item < 26:
+        while self.item < 26 and self.complete is not True:
             if self.item == len(self.output):
                 self.item = 7
                 # self.schedule_next()
@@ -136,4 +136,4 @@ class Command_adduser():
             self.write("Must enter a value!\n")
         else:
             self.item += 1
-            return
+            self.complete = True
