@@ -108,23 +108,20 @@ class Command_adduser():
             self.write("adduser: Only one or two names allowed.\n")
             self.exit()
             return
-
         self.do_output()
-        return 3
+        return 1
 
     def do_output(self):
         while self.item < 26 and self.complete is not True:
             if self.item == len(self.output):
                 self.item = 7
-                # self.schedule_next()
 
             line = self.output[self.item]
             time.sleep(0.5 + random.random() * 1)
             self.write(line[1] % {"username": self.username})
             self.item += 1
-                # self.schedule_next()
         print('what')
-        return 2
+        return 1
 
     def schedule_next(self):
         self.scheduled = reactor.callLater(0.5 + random.random() * 1, self.do_output())
@@ -140,3 +137,4 @@ class Command_adduser():
         else:
             self.item += 1
             self.complete = True
+            self.chan.send('\r\n')

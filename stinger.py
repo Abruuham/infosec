@@ -128,7 +128,6 @@ def handle_command(cmd, chan,transport, ip):
         y = cmd.split(' ')
         t = Command_adduser()
         l = t.start(y[1], chan, transport)
-        print(l)
     if response != '':
         response = response + '\r\n'
     chan.send(response)
