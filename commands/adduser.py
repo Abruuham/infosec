@@ -122,6 +122,7 @@ class Command_adduser():
             self.write(line[1] % {"username": self.username})
             self.item += 1
                 # self.schedule_next()
+        print('what')
 
     def schedule_next(self):
         self.scheduled = reactor.callLater(0.5 + random.random() * 1, self.do_output())
@@ -131,7 +132,7 @@ class Command_adduser():
             return
         elif self.item == 20 and line not in ("y", "yes"):
             self.item = 7
-            self.write("Ok, starting over\n")
+            self.write("\r\nOk, starting over\n")
         elif not len(line) and self.output[self.item][0] == O_Q:
             self.write("Must enter a value!\n")
         else:
