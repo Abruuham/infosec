@@ -120,7 +120,6 @@ class Command_adduser():
             time.sleep(0.5 + random.random() * 1)
             self.write(line[1] % {"username": self.username})
             self.item += 1
-        print('what')
         return 1
 
     def schedule_next(self):
