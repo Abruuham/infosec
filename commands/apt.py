@@ -113,6 +113,7 @@ class APTCommand:
         )
         return
 
+    @inlineCallbacks
     def install(self, args):
         if len(args) <= 1:
             msg = '0 upgraded, 0 newly installed, 0 to remove and {0} not upgraded.\r\n'
