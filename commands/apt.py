@@ -66,7 +66,7 @@ class APTCommand:
              Idx: Debian Package Index
              Idx: Debian Translation Index
              Idx: Debian dpkg status file
-             Idx: EDSP scenario file\n
+             Idx: EDSP scenario file\r\n
              """
         )
         return
@@ -115,14 +115,14 @@ class APTCommand:
               -o=? Set an arbitrary configuration option, eg -o dir::cache=/tmp
             See the apt-get(8), sources.list(5) and apt.conf(5) manual
             pages for more information and options.
-                                   This APT has Super Cow Powers.\n"""
+                                   This APT has Super Cow Powers.\r\n"""
         )
         return
 
     @inlineCallbacks
     def install(self, args):
         if len(args) <= 1:
-            msg = '0 upgraded, 0 newly installed, 0 to remove and {0} not upgraded.\n'
+            msg = '0 upgraded, 0 newly installed, 0 to remove and {0} not upgraded.\r\n'
             self.write(msg.format(random.randint(200, 300)))
             return
 
@@ -138,18 +138,18 @@ class APTCommand:
 
         total_size = sum(packages[x]['size'] for x in packages)
 
-        self.write("Reading package lists... Done\n")
-        self.write("Building dependency tree\n")
-        self.write("Reading state information... Done\n")
-        self.write("The following NEW packages will be installed:\n")
-        self.write("  %s " % " ".join(packages) + "\n")
+        self.write("Reading package lists... Done\r\n")
+        self.write("Building dependency tree\r\n")
+        self.write("Reading state information... Done\r\n")
+        self.write("The following NEW packages will be installed:\r\n")
+        self.write("  %s " % " ".join(packages) + "\r\n")
         self.write(
-            "0 upgraded, %d newly installed, 0 to remove and 259 not upgraded.\n"
+            "0 upgraded, %d newly installed, 0 to remove and 259 not upgraded.\r\n"
             % len(packages)
         )
-        self.write("Need to get %s.2kB of archives.\n" % (total_size))
+        self.write("Need to get %s.2kB of archives.\r\n" % (total_size))
         self.write(
-            "After this operation, {:.1f}kB of additional disk space will be used.\n".format(
+            "After this operation, {:.1f}kB of additional disk space will be used.\r\n".format(
                 total_size * 2.2
             )
         )
@@ -157,28 +157,28 @@ class APTCommand:
         i = 1
         for p in packages:
             self.chan.send(
-                "Get:%d http://ftp.debian.org stable/main %s %s [%s.2kB]\n"
+                "Get:%d http://ftp.debian.org stable/main %s %s [%s.2kB]\r\n"
                 % (i, p, packages[p]["version"], packages[p]["size"])
             )
             i += 1
             yield sleep(1, 2)
-        self.chan.send(f'Fetched {total_size}.2kB in 1s (4493B/s)\n')
-        self.write("Reading package fields... Done\n")
+        self.chan.send(f'Fetched {total_size}.2kB in 1s (4493B/s)\r\n')
+        self.write("Reading package fields... Done\r\n")
         yield sleep(1, 2)
-        self.write("Reading package status... Done\n")
-        self.write("(Reading database ... 177887 files and directories currently installed.)\n")
+        self.write("Reading package status... Done\r\n")
+        self.write("(Reading database ... 177887 files and directories currently installed.)\r\n")
         yield sleep(1, 2)
         for p in packages:
             self.chan.send(
-                "Unpacking {} (from .../archives/{}_{}_i386.deb) ...\n".format(
+                "Unpacking {} (from .../archives/{}_{}_i386.deb) ...\r\n".format(
                     p, p, packages[p]["version"]
                 )
             )
             yield sleep(1, 2)
-        self.write("Processing triggers for man-db ...\n")
+        self.write("Processing triggers for man-db ...\r\n")
         yield sleep(2)
         for p in packages:
-            self.chan.send("Setting up {} ({}) ...\n".format(p, packages[p]["version"]))
+            self.chan.send("Setting up {} ({}) ...\r\n".format(p, packages[p]["version"]))
             # self.fs.mkfile("/usr/bin/%s" % p, 0, 0, random.randint(10000, 90000), 33188)
             yield sleep(2)
 
@@ -194,9 +194,9 @@ class APTCommand:
 
     def locked(self):
         self.write(
-            "E: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)\n"
+            "E: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)\r\n"
         )
-        self.write("E: Unable to lock the list directory\n")
+        self.write("E: Unable to lock the list directory\r\n")
         return
 
 
