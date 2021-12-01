@@ -41,7 +41,7 @@ class APTCommand:
             if command[1] == '-v':
                 self.version()
             elif command[1] == 'install':
-                self.install()
+                self.install(commands)
             elif command[1] == 'moo':
                 self.moo()
             else:
@@ -183,7 +183,7 @@ class APTCommand:
             yield sleep(2)
 
     def moo(self):
-        self.write("         (__)\n")
+        self.write("         (__)\r\n")
         self.write("         (oo)\r\n")
         self.write("   /------\\/\r\n")
         self.write("  / |    ||\r\n")
