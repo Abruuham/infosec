@@ -13,7 +13,7 @@ class FakePackages:
     def get_command(name):
         class FakeInstallation:
             def call(self):
-                print(f'print{name}: Segmentation fault\n')
+                self.write(f'self.write{name}: Segmentation fault\n')
 
         return FakeInstallation
 
@@ -32,8 +32,9 @@ class APTCommand:
     Any installed packages, places a 'Segfault' at /usr/bin/PACKAGE.
     '''
 
-    def start(self, command):
+    def start(self, command, chan):
         self.commands = command
+        self.chan = chan
         if len(command) == 1:
             self.do_help()
         elif len(command) > 1:
@@ -46,8 +47,14 @@ class APTCommand:
             else:
                 self.locked()
 
+    def write(self, data: str) -> None:
+        """
+        Write a string to the user on stdout
+        """
+        self.chan.send(data)
+
     def version(self):
-        print(
+        self.write(
             """apt 1.0.9.8.1 for amd64 compiled on Jun 10 2015 09:42:06
             Supported modules:
             *Ver: Standard .deb
@@ -65,7 +72,7 @@ class APTCommand:
         return
 
     def help(self):
-        print(
+        self.write(
             """apt 1.0.9.8.1 for amd64 compiled on Jun 10 2015 09:42:06
             Usage: apt-get [options] command
                    apt-get [options] install|remove pkg1 [pkg2 ...]
@@ -114,9 +121,9 @@ class APTCommand:
 
     @inlineCallbacks
     def install(self, args):
-        if len(args) <=1:
+        if len(args) <= 1:
             msg = '0 upgraded, 0 newly installed, 0 to remove and {0} not upgraded.\n'
-            print(msg.format(random.randint(200, 300)))
+            self.write(msg.format(random.randint(200, 300)))
             return
 
         packages = {}
@@ -131,17 +138,17 @@ class APTCommand:
 
         total_size = sum(packages[x]['size'] for x in packages)
 
-        print("Reading package lists... Done\n")
-        print("Building dependency tree\n")
-        print("Reading state information... Done\n")
-        print("The following NEW packages will be installed:\n")
-        print("  %s " % " ".join(packages) + "\n")
-        print(
+        self.write("Reading package lists... Done\n")
+        self.write("Building dependency tree\n")
+        self.write("Reading state information... Done\n")
+        self.write("The following NEW packages will be installed:\n")
+        self.write("  %s " % " ".join(packages) + "\n")
+        self.write(
             "0 upgraded, %d newly installed, 0 to remove and 259 not upgraded.\n"
             % len(packages)
         )
-        print("Need to get %s.2kB of archives.\n" % (total_size))
-        print(
+        self.write("Need to get %s.2kB of archives.\n" % (total_size))
+        self.write(
             "After this operation, {:.1f}kB of additional disk space will be used.\n".format(
                 total_size * 2.2
             )
@@ -149,47 +156,47 @@ class APTCommand:
 
         i = 1
         for p in packages:
-            print(
+            self.chan.send(
                 "Get:%d http://ftp.debian.org stable/main %s %s [%s.2kB]\n"
                 % (i, p, packages[p]["version"], packages[p]["size"])
             )
             i += 1
             yield sleep(1, 2)
-        print(f"Fetched {total_size}.2kB in 1s (4493B/s)\n")
-        print("Reading package fields... Done\n")
+        self.chan.send(f'Fetched {total_size}.2kB in 1s (4493B/s)\n')
+        self.write("Reading package fields... Done\n")
         yield sleep(1, 2)
-        print("Reading package status... Done\n")
-        print("(Reading database ... 177887 files and directories currently installed.)\n")
+        self.write("Reading package status... Done\n")
+        self.write("(Reading database ... 177887 files and directories currently installed.)\n")
         yield sleep(1, 2)
         for p in packages:
-            print(
+            self.chan.send(
                 "Unpacking {} (from .../archives/{}_{}_i386.deb) ...\n".format(
                     p, p, packages[p]["version"]
                 )
             )
             yield sleep(1, 2)
-        print("Processing triggers for man-db ...\n")
+        self.write("Processing triggers for man-db ...\n")
         yield sleep(2)
         for p in packages:
-            print("Setting up {} ({}) ...\n".format(p, packages[p]["version"]))
+            self.chan.send("Setting up {} ({}) ...\n".format(p, packages[p]["version"]))
             # self.fs.mkfile("/usr/bin/%s" % p, 0, 0, random.randint(10000, 90000), 33188)
             yield sleep(2)
 
     def moo(self):
-        print("         (__)\n")
-        print("         (oo)\n")
-        print("   /------\\/\n")
-        print("  / |    ||\n")
-        print(" *  /\\---/\\ \n")
-        print("    ~~   ~~\n")
-        print('...."Have you mooed today?"...\n')
+        self.write("         (__)\n")
+        self.write("         (oo)\n")
+        self.write("   /------\\/\n")
+        self.write("  / |    ||\n")
+        self.write(" *  /\\---/\\ \n")
+        self.write("    ~~   ~~\n")
+        self.write('...."Have you mooed today?"...\n')
         return
 
     def locked(self):
-        print(
+        self.write(
             "E: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)\n"
         )
-        print("E: Unable to lock the list directory\n")
+        self.write("E: Unable to lock the list directory\n")
         return
 
 

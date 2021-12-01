@@ -76,7 +76,7 @@ def handle_command(cmd, chan,transport, ip):
     elif cmd.startswith('apt'):
         y = cmd.split(' ')
         t = APTCommand()
-        l = t.start(y)
+        l = t.start(y, chan)
     if response != '':
         response = response + '\r\n'
     chan.send(response)
