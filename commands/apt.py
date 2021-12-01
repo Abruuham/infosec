@@ -33,6 +33,8 @@ class APTCommand:
     '''
 
     def start(self, command, chan):
+        print(command)
+        print(len(command))
         self.commands = command
         self.chan = chan
         if len(command) == 1:
