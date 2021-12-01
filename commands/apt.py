@@ -36,7 +36,7 @@ class APTCommand:
         self.commands = command
         self.chan = chan
         if len(command) == 1:
-            self.do_help()
+            self.help()
         elif len(command) > 1:
             if command[1] == '-v':
                 self.version()
@@ -184,12 +184,12 @@ class APTCommand:
 
     def moo(self):
         self.write("         (__)\n")
-        self.write("         (oo)\n")
-        self.write("   /------\\/\n")
-        self.write("  / |    ||\n")
-        self.write(" *  /\\---/\\ \n")
-        self.write("    ~~   ~~\n")
-        self.write('...."Have you mooed today?"...\n')
+        self.write("         (oo)\r\n")
+        self.write("   /------\\/\r\n")
+        self.write("  / |    ||\r\n")
+        self.write(" *  /\\---/\\\r\n")
+        self.write("    ~~   ~~\r\n")
+        self.write('...."Have you mooed today?"...\r\n')
         return
 
     def locked(self):
