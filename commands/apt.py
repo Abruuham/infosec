@@ -13,7 +13,7 @@ class FakePackages:
     def get_command(name):
         class FakeInstallation:
             def call(self):
-                self.print(f'print{name}: Segmentation fault\n')
+                print(f'print{name}: Segmentation fault\n')
 
         return FakeInstallation
 
@@ -47,7 +47,7 @@ class APTCommand:
                 self.locked()
 
     def version(self):
-        self.print(
+        print(
             """apt 1.0.9.8.1 for amd64 compiled on Jun 10 2015 09:42:06
             Supported modules:
             *Ver: Standard .deb
@@ -65,7 +65,7 @@ class APTCommand:
         return
 
     def help(self):
-        self.print(
+        print(
             """apt 1.0.9.8.1 for amd64 compiled on Jun 10 2015 09:42:06
             Usage: apt-get [options] command
                    apt-get [options] install|remove pkg1 [pkg2 ...]
