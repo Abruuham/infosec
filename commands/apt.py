@@ -113,7 +113,6 @@ class APTCommand:
         )
         return
 
-    @inlineCallbacks
     def install(self, args):
         if len(args) <= 1:
             msg = '0 upgraded, 0 newly installed, 0 to remove and {0} not upgraded.\r\n'
@@ -142,7 +141,7 @@ class APTCommand:
         self.write("  %s " % " ".join(packages) + "\r\n")
         self.write(
             "0 upgraded, %d newly installed, 0 to remove and 259 not upgraded.\r\n"
-            % len(packages)
+            % len(packages-1)
         )
         self.write("Need to get %s.2kB of archives.\r\n" % (total_size))
         self.write(
