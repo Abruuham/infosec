@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import random
+import time
 import re
 
 from twisted.internet import defer, reactor
@@ -18,13 +19,6 @@ class FakePackages:
         return FakeInstallation
 
 
-def sleep(time, time2=None):
-    d = defer.Deffered()
-    if time2:
-        time = random.randint(time * 100, time2 * 100) / 100.0
-    reactor.callLater(time, d.callback, None)
-    return d
-
 
 class APTCommand:
     '''
@@ -33,8 +27,6 @@ class APTCommand:
     '''
 
     def start(self, command, chan):
-        print(command)
-        print(len(command))
         self.commands = command
         self.chan = chan
         if len(command) == 1:
@@ -43,7 +35,7 @@ class APTCommand:
             if command[1] == '-v':
                 self.version()
             elif command[1] == 'install':
-                self.install(commands)
+                self.install(self.commands)
             elif command[1] == 'moo':
                 self.moo()
             else:
@@ -163,26 +155,26 @@ class APTCommand:
                 % (i, p, packages[p]["version"], packages[p]["size"])
             )
             i += 1
-            yield sleep(1, 2)
+            time.sleep(0.5 + random.random() * 1)
         self.chan.send(f'Fetched {total_size}.2kB in 1s (4493B/s)\r\n')
         self.write("Reading package fields... Done\r\n")
-        yield sleep(1, 2)
+        time.sleep(0.5 + random.random() * 1)
         self.write("Reading package status... Done\r\n")
         self.write("(Reading database ... 177887 files and directories currently installed.)\r\n")
-        yield sleep(1, 2)
+        time.sleep(0.5 + random.random() * 1)
         for p in packages:
             self.chan.send(
                 "Unpacking {} (from .../archives/{}_{}_i386.deb) ...\r\n".format(
                     p, p, packages[p]["version"]
                 )
             )
-            yield sleep(1, 2)
+            time.sleep(0.5 + random.random() * 1)
         self.write("Processing triggers for man-db ...\r\n")
-        yield sleep(2)
+        time.sleep(0.5 + random.random() * 1)
         for p in packages:
             self.chan.send("Setting up {} ({}) ...\r\n".format(p, packages[p]["version"]))
             # self.fs.mkfile("/usr/bin/%s" % p, 0, 0, random.randint(10000, 90000), 33188)
-            yield sleep(2)
+            time.sleep(0.5 + random.random() * 1)
 
     def moo(self):
         self.write("         (__)\r\n")
