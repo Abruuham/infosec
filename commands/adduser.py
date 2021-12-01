@@ -7,8 +7,6 @@ import random
 import time
 
 from typing import Optional
-import sys
-
 from twisted.internet import reactor  # type: ignore
 commands = {}
 
@@ -19,7 +17,6 @@ LEFT_KEY = '\x1b[D'.encode()
 BACK_KEY = '\x7f'.encode()
 
 O_O, O_Q, O_P = 1, 2, 3
-sys.setrecursionlimit(1000000)
 
 class Command_adduser():
     item: int
@@ -91,7 +88,8 @@ class Command_adduser():
                     self.chan.send(transport)
                     command += transport.decode('utf-8')
                     if self.item == 20:
-                        self.lineReceived(command)
+                        self.line_received(command)
+                        command += '\r'
         else:
             self.chan.send(data)
 
@@ -122,15 +120,13 @@ class Command_adduser():
             self.item += 1
         return 1
 
-    def schedule_next(self):
-        self.scheduled = reactor.callLater(0.5 + random.random() * 1, self.do_output())
-
-    def lineReceived(self, line):
+    def line_received(self, line):
         if self.item + 1 == len(self.output) and line.strip() in ("n", "no"):
             return
         elif self.item == 20 and line not in ("y", "yes"):
             self.item = 7
             self.write("\r\nOk, starting over\n")
+            return
         elif not len(line) and self.output[self.item][0] == O_Q:
             self.write("Must enter a value!\n")
         else:

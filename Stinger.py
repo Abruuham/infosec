@@ -13,6 +13,8 @@ import colors
 from twisted.python import log
 from commands import __all__
 from commands.adduser import Command_adduser
+from commands.apt import APTCommand
+from StingerServer import StingerServer
 
 print(
     colors.bcolors.COLOR['YELLOW'] +
@@ -52,70 +54,13 @@ RIGHT_KEY = '\x1b[C'.encode()
 LEFT_KEY = '\x1b[D'.encode()
 BACK_KEY = '\x7f'.encode()
 
+COMMANDS = {}
+
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s %(message)s',
                     datefmt='%m-%d-%Y %H:%M:%S',
                     filename='stinger.log',
                     filemode='a')
-
-
-def prepare_logger():
-    logger = logging.getLogger(__name__)
-
-    # Adding Console Handler
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.DEBUG)
-    logger.addHandler(console_handler)
-    return logger
-
-
-class StingerPot(paramiko.ServerInterface):
-
-    def __init__(self, client_ip):
-        self.client_ip = client_ip
-        self.log_file_path = 'stinger.log'
-        self.logger = prepare_logger()
-        self.logger.info('[*] Honeypot initializing...')
-        self.logger.info('[*] Log file path: %s' % self.log_file_path)
-        self.event = threading.Event()
-
-    def check_channel_request(self, kind, chanid):
-        # logging.info('client called check_channel_request ({}): {}'.format(
-        #     self.client_ip, kind))
-        if kind == 'session':
-            return paramiko.OPEN_SUCCEEDED
-
-    def get_allowed_auths(self, username):
-        # logging.info('client called get_allowed_auths ({}) with username {}'.format(
-        #     self.client_ip, username))
-        return "publickey, password"
-
-    def check_auth_publickey(self, username, key):
-        # fingerprint = u(hexlify(key.get_fingerprint()))
-        # logging.info(
-        #     'client public key ({}): username: {}, key name: {}, md5 fingerprint: {}, base64: {}, bits: {}'.format(
-        #         self.client_ip, username, key.get_name(), fingerprint, key.get_base64(), key.get_bits()))
-        return paramiko.AUTH_SUCCESSFUL
-
-    def check_auth_password(self, username, password):
-        # Accept all passwords as valid by default
-        # logging.info('new client credentials ({}): username: {}, password: {}'.format(
-        #     self.client_ip, username, password))
-        return paramiko.AUTH_SUCCESSFUL
-
-    def check_channel_shell_request(self, channel):
-        self.event.set()
-        return True
-
-    def check_channel_pty_request(self, channel, term, width, height, pixelwidth, pixelheight, modes):
-        return True
-
-    def check_channel_exec_request(self, channel, command):
-        # command_text = str(command.decode("utf-8"))
-        #
-        # logging.info('client sent command via check_channel_exec_request ({}): {}'.format(
-        #     self.client_ip, command_text))
-        return True
 
 
 def handle_command(cmd, chan,transport, ip):
@@ -128,6 +73,10 @@ def handle_command(cmd, chan,transport, ip):
         y = cmd.split(' ')
         t = Command_adduser()
         l = t.start(y[1], chan, transport)
+    elif cmd.startswith('apt'):
+        y = cmd.split(' ')
+        t = APTCommand()
+        l = t.start(y)
     if response != '':
         response = response + '\r\n'
     chan.send(response)
@@ -141,7 +90,7 @@ def handle_connection(client, addr):
     try:
         transport = paramiko.Transport(client)
         transport.add_server_key(HOST_KEY)
-        server = StingerPot(client_ip)
+        server = StingerServer(client_ip)
         try:
             transport.start_server(server=server)
 
@@ -263,7 +212,7 @@ def handle_connection(client, addr):
 def start_server(port, bind):
     """Init and run the ssh server"""
     try:
-        print('Listening for connection ...')
+        print('Listening for connection ...\r\n')
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sock.bind((bind, port))
@@ -287,14 +236,12 @@ def start_server(port, bind):
 
 if __name__ == '__main__':
 
-    commands = {}
-
     for c in __all__:
         try:
             module = __import__(
                 f'commands.{c}', globals(), locals(), ['commands']
             )
-            commands.update(module.commands)
+            COMMANDS.update(module.commands)
         except Exception as e:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             log.error(
