@@ -122,7 +122,7 @@ class APTCommand:
 
         packages = {}
 
-        for y in [re.sub('a-zA-Z0-9', '', x) for x in self.commands[1:]]:
+        for y in [re.sub('a-zA-Z0-9', '', x) for x in self.commands[2:]]:
             packages[y] = {
                 'version': '{}, {}-{}'.format(
                     random.choice([0, 1]), random.randint(1, 40), random.randint(1, 10)
@@ -132,9 +132,12 @@ class APTCommand:
 
         total_size = sum(packages[x]['size'] for x in packages)
 
+        time.sleep(0.5 + random.random() * 1)
         self.write("Reading package lists... Done\r\n")
+        time.sleep(0.5 + random.random() * 1)
         self.write("Building dependency tree\r\n")
         self.write("Reading state information... Done\r\n")
+        time.sleep(0.5 + random.random() * 1)
         self.write("The following NEW packages will be installed:\r\n")
         self.write("  %s " % " ".join(packages) + "\r\n")
         self.write(
@@ -175,6 +178,7 @@ class APTCommand:
             self.chan.send("Setting up {} ({}) ...\r\n".format(p, packages[p]["version"]))
             # self.fs.mkfile("/usr/bin/%s" % p, 0, 0, random.randint(10000, 90000), 33188)
             time.sleep(0.5 + random.random() * 1)
+        return
 
     def moo(self):
         self.write("         (__)\r\n")
