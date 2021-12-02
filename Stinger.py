@@ -69,7 +69,7 @@ def handle_command(cmd, chan,transport):
     if cmd.startswith('ls'):
         x = cmd.split(' ')
         y = LSCommand()
-        y.start()
+        y.start(x, chan)
     elif cmd.startswith('pwd'):
         response = '/home/root/'
     elif cmd.startswith('adduser'):
