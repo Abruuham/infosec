@@ -46,17 +46,17 @@ class APTCommand:
     def version(self):
         self.write(
             """apt 1.0.9.8.1 for amd64 compiled on Jun 10 2015 09:42:06\r\n
-            Supported modules:\r\n
-            *Ver: Standard .deb\r\n
-            *Pkg:  Debian dpkg interface (Priority 30)\r\n
-             Pkg:  Debian APT solver interface (Priority -1000)\r\n
-             S.L: 'deb' Standard Debian binary tree\r\n
-             S.L: 'deb-src' Standard Debian source tree\r\n
-             Idx: Debian Source Index\r\n
-             Idx: Debian Package Index\r\n
-             Idx: Debian Translation Index\r\n
-             Idx: Debian dpkg status file\r\n
-             Idx: EDSP scenario file\r\n
+            Supported modules:\r
+            *Ver: Standard .deb\r
+            *Pkg:  Debian dpkg interface (Priority 30)\r
+             Pkg:  Debian APT solver interface (Priority -1000)\r
+             S.L: 'deb' Standard Debian binary tree\r
+             S.L: 'deb-src' Standard Debian source tree\r
+             Idx: Debian Source Index\r
+             Idx: Debian Package Index\r
+             Idx: Debian Translation Index\r
+             Idx: Debian dpkg status file\r
+             Idx: EDSP scenario file\r
              """
         )
         return
