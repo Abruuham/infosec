@@ -45,67 +45,64 @@ class APTCommand:
 
     def version(self):
         self.write(
-            """apt 1.0.9.8.1 for amd64 compiled on Jun 10 2015 09:42:06\r\n
-            Supported modules:\r
-            *Ver: Standard .deb\r
-            *Pkg:  Debian dpkg interface (Priority 30)\r
-             Pkg:  Debian APT solver interface (Priority -1000)\r
-             S.L: 'deb' Standard Debian binary tree\r
-             S.L: 'deb-src' Standard Debian source tree\r
-             Idx: Debian Source Index\r
-             Idx: Debian Package Index\r
-             Idx: Debian Translation Index\r
-             Idx: Debian dpkg status file\r
-             Idx: EDSP scenario file\r
+            """apt 1.0.9.8.1 for amd64 compiled on Jun 10 2015 09:42:06\r
+Supported modules:\r
+*Ver: Standard .deb\r
+*Pkg:  Debian dpkg interface (Priority 30)\r
+ Pkg:  Debian APT solver interface (Priority -1000)\r
+ S.L: 'deb' Standard Debian binary tree\r
+ S.L: 'deb-src' Standard Debian source tree\r
+ Idx: Debian Source Index\r
+ Idx: Debian Package Index\r
+ Idx: Debian Translation Index\r
+ Idx: Debian dpkg status file\r
+ Idx: EDSP scenario file\r\n
              """
         )
         return
 
     def help(self):
         self.write(
-            """apt 1.0.9.8.1 for amd64 compiled on Jun 10 2015 09:42:06\r\n
-            Usage: apt-get [options] command\r\n
-                   apt-get [options] install|remove pkg1 [pkg2 ...]\r\n
-                   apt-get [options] source pkg1 [pkg2 ...]\r\n
-    
-            apt-get is a simple command line interface for downloading and\r\n
-            installing packages. The most frequently used commands are update\r\n
-            and install.\r\n
-    \r\n
-            Commands:\r\n
-               update - Retrieve new lists of packages\r\n
-               upgrade - Perform an upgrade\r\n
-               install - Install new packages (pkg is libc6 not libc6.deb)\r\n
-               remove - Remove packages\r\n
-               autoremove - Remove automatically all unused packages\r\n
-               purge - Remove packages and config files\r\n
-               source - Download source archives\r\n
-               build-dep - Configure build-dependencies for source packages\r\n
-               dist-upgrade - Distribution upgrade, see apt-get(8)\r\n
-               dselect-upgrade - Follow dselect selections\r\n
-               clean - Erase downloaded archive files\r\n
-               autoclean - Erase old downloaded archive files\r\n
-               check - Verify that there are no broken dependencies\r\n
-               changelog - Download and display the changelog for the given package\r\n
-               download - Download the binary package into the current directory\r\n
-    
-            Options:\r\n
-              -h  This help text.\r\n
-              -q  Loggable output - no progress indicator\r\n
-              -qq No output except for errors\r\n
-              -d  Download only - do NOT install or unpack archives\r\n
-              -s  No-act. Perform ordering simulation\r\n
-              -y  Assume Yes to all queries and do not prompt\r\n
-              -f  Attempt to correct a system with broken dependencies in place\r\n
-              -m  Attempt to continue if archives are unlocatable\r\n
-              -u  Show a list of upgraded packages as well\r\n
-              -b  Build the source package after fetching it\r\n
-              -V  Show verbose version numbers\r\n
-              -c=? Read this configuration file\r\n
-              -o=? Set an arbitrary configuration option, eg -o dir::cache=/tmp\r\n
-            See the apt-get(8), sources.list(5) and apt.conf(5) manual\r\n
-            pages for more information and options.\r\n
-                                   This APT has Super Cow Powers.\r\n"""
+            """apt 1.0.9.8.1 for amd64 compiled on Jun 10 2015 09:42:06\r
+Usage: apt-get [options] command\r
+       apt-get [options] install|remove pkg1 [pkg2 ...]\r
+       apt-get [options] source pkg1 [pkg2 ...]\r\n
+apt-get is a simple command line interface for downloading and\r
+installing packages. The most frequently used commands are update\r
+and install.\r\n
+Commands:\r
+   update - Retrieve new lists of packages\r
+   upgrade - Perform an upgrade\r
+   install - Install new packages (pkg is libc6 not libc6.deb)\r
+   remove - Remove packages\r
+   autoremove - Remove automatically all unused packages\r
+   purge - Remove packages and config files\r
+   source - Download source archives\r
+   build-dep - Configure build-dependencies for source packages\r
+   dist-upgrade - Distribution upgrade, see apt-get(8)\r
+   dselect-upgrade - Follow dselect selections\r
+   clean - Erase downloaded archive files\r
+   autoclean - Erase old downloaded archive files\r
+   check - Verify that there are no broken dependencies\r
+   changelog - Download and display the changelog for the given package\r
+   download - Download the binary package into the current directory\r\n
+Options:\r
+  -h  This help text.\r
+  -q  Loggable output - no progress indicator\r
+  -qq No output except for errors\r
+  -d  Download only - do NOT install or unpack archives\r
+  -s  No-act. Perform ordering simulation\r
+  -y  Assume Yes to all queries and do not prompt\r
+  -f  Attempt to correct a system with broken dependencies in place\r
+  -m  Attempt to continue if archives are unlocatable\r
+  -u  Show a list of upgraded packages as well\r
+  -b  Build the source package after fetching it\r
+  -V  Show verbose version numbers\r
+  -c=? Read this configuration file\r
+  -o=? Set an arbitrary configuration option, eg -o dir::cache=/tmp\r
+See the apt-get(8), sources.list(5) and apt.conf(5) manual\r
+pages for more information and options.\r
+                       This APT has Super Cow Powers.\r\n"""
         )
         return
 
