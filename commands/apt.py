@@ -57,7 +57,7 @@ Supported modules:\r
  Idx: Debian Translation Index\r
  Idx: Debian dpkg status file\r
  Idx: EDSP scenario file\r\n
-             """
+ """
         )
         return
 
