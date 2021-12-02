@@ -9,16 +9,16 @@ RESET = bcolors.COLOR["RESET_ALL"]
 
 class LSCommand:
 
-    def start(self,arg, chan):
+    def start(self, arg, chan):
         self.args = arg
         self.chan = chan
         if len(self.args) <= 1:
             self.list()
             return
         else:
-            if len(self.args) == 1 and self.args[1] == '--help':
+            if len(self.args) > 1 and self.args[1] == '--help':
                 self.help()
-            elif len(self.args) == 1 and self.args[1] == '-la':
+            elif len(self.args) > 1 and self.args[1] == '-la':
                 self.list_all()
                 return
             else:
