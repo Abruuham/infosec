@@ -68,7 +68,7 @@ def handle_command(cmd, chan,transport):
     response = ''
     if cmd.startswith('ls'):
         x = cmd.split(' ')
-        y = LSCommand(x, chan)
+        y = LSCommand()
         y.start()
     elif cmd.startswith('pwd'):
         response = '/home/root/'
