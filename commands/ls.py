@@ -7,7 +7,7 @@ BLUE = bcolors.COLOR["BLUE"]
 RESET = bcolors.COLOR["RESET_ALL"]
 
 
-class LSCommand:
+class LSCommand(object):
 
     def __int__(self, arg, chan):
         self.args = arg
