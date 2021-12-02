@@ -170,63 +170,63 @@ class LSCommand:
     def list_all(self):
         self.chan.send(
             """total 25056
-            drwxr-xr-x 31 root root     4096 Dec  1 16:48 .
-            drwxr-xr-x 20 root root    36864 Nov  2 01:51 ..
-            -rw-------  1 root root    33717 Dec  1 16:48 .bash_history
-            -rw-r--r--  1 root root     3412 Sep 15 21:19 .bashrc
-            -rw-r--r--  1 root root    16241 Jun 29  2019 binary
-            drwx------  5 root root     4096 Aug 10  2019 binaryninja
-            drwx------  2 root root     4096 Jun 27  2019 .BurpSuite
-            drwx------ 21 root root     4096 Oct 14 16:45 .cache
-            drwxr-xr-x  4 root root     4096 Sep 15 21:21 .cargo
-            drwxr-xr-x 23 root root     4096 Nov  2 01:16 .config
-            drwx------  3 root root     4096 Oct 14 16:45 .dbus
-            drwxr-xr-x  3 root root     4096 Sep 23 21:15 Desktop
-            drwxr-xr-x 11 root root     4096 Nov 27 21:45 Documents
-            drwxr-xr-x  4 root root     4096 Oct 26 14:50 Downloads
-            -rw-rw-rw-  1 root root   402432 Jul  4  2019 EasyPass.exe
-            -rw-r--r--  1 root root    11656 Sep 27  2020 .face
-            lrwxrwxrwx  1 root root       11 Sep 27  2020 .face.icon -> /root/.face
-            drwxr-xr-x  3 root root     4096 Sep 23 21:06 .gem
-            -rw-r--r--  1 root root       29 Nov 30 23:28 .gitconfig
-            -rw-------  1 root root       69 Dec  1 02:37 .git-credentials
-            drwx------  3 root root     4096 Dec  1 16:44 .gnupg
-            -rw-r--r--  1 root root        0 Nov  2 02:00 hamster.txt
-            -rw-------  1 root root    10804 Sep 23 20:40 .ICEauthority
-            -rw-rw-rw-  1 root root     6304 Aug 10  2019 impossible_password.bin
-            -rwxrw-rw-  1 root root  3315571 Aug 21  2019 init_sat
-            drwx------  2 root root     4096 Oct 26 14:36 .irssi
-            drwxr-xr-x  4 root root     4096 Jun 27  2019 .java
-            drwx------  2 root root     4096 Oct 12 20:07 .kismet
-            drwx------  3 root root     4096 May 17  2019 .local
-            drwx------  5 root root     4096 Jun 27  2019 .mozilla
-            drwxr-xr-x  9 root root     4096 Sep 23 21:10 .msf4
-            drwxr-xr-x  2 root root     4096 May 17  2019 Music
-            drwxr-xr-x 10 root root     4096 Aug 21  2019 PhoneInfoga
-            drwxr-xr-x  2 root root     4096 May 17  2019 Pictures
-            -rw-r--r--  1 root root      169 Sep 15 21:19 .profile
-            drwxr-xr-x  2 root root     4096 May 17  2019 Public
-            -rw-------  1 root root        7 Aug 21  2019 .python_history
-            -rw-rw-rw-  1 root root     8800 Aug 21  2019 rand2
-            drwxr-xr-x  6 root root     4096 Sep 15 21:19 .rustup
-            -rw-r--r--  1 root root     1330 Jun 28  2019 shadow
-            drwxr-xr-x  2 root root     4096 Oct 12 20:36 Shellter_Backups
-            -rw-r--r--  1 root root 21426176 Nov  2 02:00 sniff-2021-11-02-eth.pcap
-            -rw-r--r--  1 root root    78336 Oct 12 20:39 something321.exe
-            -rw-r--r--  1 root root    78336 Oct 12 22:36 something32.exe
-            drwx------  2 root root     4096 Sep  3  2020 .ssh
-            drwxr-xr-x  2 root root     4096 May 17  2019 Templates
-            drwx------  3 root root     4096 Oct 26 18:16 .tor
-            -rw-r-----  1 root root        5 Dec  1 16:44 .vboxclient-clipboard.pid
-            -rw-r-----  1 root root        5 Dec  1 16:44 .vboxclient-display.pid
-            -rw-r-----  1 root root        4 Dec  1 16:43 .vboxclient-display-svga.pid
-            -rw-r-----  1 root root        5 Dec  1 16:44 .vboxclient-draganddrop.pid
-            -rw-r-----  1 root root        5 Dec  1 16:44 .vboxclient-seamless.pid
-            drwxr-xr-x  2 root root     4096 May 17  2019 Videos
-            drwxr-xr-x  2 root root     4096 Nov 28 17:45 .vim
-            -rw-------  1 root root    23096 Dec  1 02:21 .viminfo
-            -rw-r--r--  1 root root      206 Jun  1  2020 .wget-hsts
-            drwxr-xr-x  4 root root     4096 Oct 12 22:34 .wine
-            -rw-r--r--  1 root root       21 Sep 15 21:19 .zshenv\r\n
+drwxr-xr-x 31 root root     4096 Dec  1 16:48 .
+drwxr-xr-x 20 root root    36864 Nov  2 01:51 ..
+-rw-------  1 root root    33717 Dec  1 16:48 .bash_history
+-rw-r--r--  1 root root     3412 Sep 15 21:19 .bashrc
+-rw-r--r--  1 root root    16241 Jun 29  2019 binary
+drwx------  5 root root     4096 Aug 10  2019 binaryninja
+drwx------  2 root root     4096 Jun 27  2019 .BurpSuite
+drwx------ 21 root root     4096 Oct 14 16:45 .cache
+drwxr-xr-x  4 root root     4096 Sep 15 21:21 .cargo
+drwxr-xr-x 23 root root     4096 Nov  2 01:16 .config
+drwx------  3 root root     4096 Oct 14 16:45 .dbus
+drwxr-xr-x  3 root root     4096 Sep 23 21:15 Desktop
+drwxr-xr-x 11 root root     4096 Nov 27 21:45 Documents
+drwxr-xr-x  4 root root     4096 Oct 26 14:50 Downloads
+-rw-rw-rw-  1 root root   402432 Jul  4  2019 EasyPass.exe
+-rw-r--r--  1 root root    11656 Sep 27  2020 .face
+lrwxrwxrwx  1 root root       11 Sep 27  2020 .face.icon -> /root/.face
+drwxr-xr-x  3 root root     4096 Sep 23 21:06 .gem
+-rw-r--r--  1 root root       29 Nov 30 23:28 .gitconfig
+-rw-------  1 root root       69 Dec  1 02:37 .git-credentials
+drwx------  3 root root     4096 Dec  1 16:44 .gnupg
+-rw-r--r--  1 root root        0 Nov  2 02:00 hamster.txt
+-rw-------  1 root root    10804 Sep 23 20:40 .ICEauthority
+-rw-rw-rw-  1 root root     6304 Aug 10  2019 impossible_password.bin
+-rwxrw-rw-  1 root root  3315571 Aug 21  2019 init_sat
+drwx------  2 root root     4096 Oct 26 14:36 .irssi
+drwxr-xr-x  4 root root     4096 Jun 27  2019 .java
+drwx------  2 root root     4096 Oct 12 20:07 .kismet
+drwx------  3 root root     4096 May 17  2019 .local
+drwx------  5 root root     4096 Jun 27  2019 .mozilla
+drwxr-xr-x  9 root root     4096 Sep 23 21:10 .msf4
+drwxr-xr-x  2 root root     4096 May 17  2019 Music
+drwxr-xr-x 10 root root     4096 Aug 21  2019 PhoneInfoga
+drwxr-xr-x  2 root root     4096 May 17  2019 Pictures
+-rw-r--r--  1 root root      169 Sep 15 21:19 .profile
+drwxr-xr-x  2 root root     4096 May 17  2019 Public
+-rw-------  1 root root        7 Aug 21  2019 .python_history
+-rw-rw-rw-  1 root root     8800 Aug 21  2019 rand2
+drwxr-xr-x  6 root root     4096 Sep 15 21:19 .rustup
+-rw-r--r--  1 root root     1330 Jun 28  2019 shadow
+drwxr-xr-x  2 root root     4096 Oct 12 20:36 Shellter_Backups
+-rw-r--r--  1 root root 21426176 Nov  2 02:00 sniff-2021-11-02-eth.pcap
+-rw-r--r--  1 root root    78336 Oct 12 20:39 something321.exe
+-rw-r--r--  1 root root    78336 Oct 12 22:36 something32.exe
+drwx------  2 root root     4096 Sep  3  2020 .ssh
+drwxr-xr-x  2 root root     4096 May 17  2019 Templates
+drwx------  3 root root     4096 Oct 26 18:16 .tor
+-rw-r-----  1 root root        5 Dec  1 16:44 .vboxclient-clipboard.pid
+-rw-r-----  1 root root        5 Dec  1 16:44 .vboxclient-display.pid
+-rw-r-----  1 root root        4 Dec  1 16:43 .vboxclient-display-svga.pid
+-rw-r-----  1 root root        5 Dec  1 16:44 .vboxclient-draganddrop.pid
+-rw-r-----  1 root root        5 Dec  1 16:44 .vboxclient-seamless.pid
+drwxr-xr-x  2 root root     4096 May 17  2019 Videos
+drwxr-xr-x  2 root root     4096 Nov 28 17:45 .vim
+-rw-------  1 root root    23096 Dec  1 02:21 .viminfo
+-rw-r--r--  1 root root      206 Jun  1  2020 .wget-hsts
+drwxr-xr-x  4 root root     4096 Oct 12 22:34 .wine
+-rw-r--r--  1 root root       21 Sep 15 21:19 .zshenv\r\n
             """
         )
