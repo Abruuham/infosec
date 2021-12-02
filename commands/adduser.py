@@ -7,8 +7,7 @@ import random
 import time
 
 from typing import Optional
-from twisted.internet import reactor  # type: ignore
-commands = {}
+
 
 UP_KEY = '\x1b[A'.encode()
 DOWN_KEY = '\x1b[B'.encode()

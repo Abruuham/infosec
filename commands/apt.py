@@ -4,10 +4,6 @@ import random
 import time
 import re
 
-from twisted.internet import defer, reactor
-from twisted.internet.defer import inlineCallbacks
-
-commands = {}
 
 class FakePackages:
     @staticmethod
@@ -195,27 +191,4 @@ class APTCommand:
         )
         self.write("E: Unable to lock the list directory\r\n")
         return
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

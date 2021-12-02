@@ -15,6 +15,7 @@ from commands import __all__
 from commands.adduser import Command_adduser
 from commands.apt import APTCommand
 from StingerServer import StingerServer
+from commands.ls import LSCommand
 
 print(
     colors.bcolors.COLOR['YELLOW'] +
@@ -63,10 +64,10 @@ logging.basicConfig(level=logging.DEBUG,
                     filemode='a')
 
 
-def handle_command(cmd, chan,transport, ip):
+def handle_command(cmd, chan,transport):
     response = ''
     if cmd.startswith('ls'):
-        response = 'users.txt'
+        LSCommand(cmd.split(' '), chan)
     elif cmd.startswith('pwd'):
         response = '/home/root/'
     elif cmd.startswith('adduser'):
