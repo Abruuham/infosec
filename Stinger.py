@@ -67,7 +67,9 @@ logging.basicConfig(level=logging.DEBUG,
 def handle_command(cmd, chan,transport):
     response = ''
     if cmd.startswith('ls'):
-        LSCommand(cmd.split(' '), chan)
+        x = cmd.split(' ')
+        y = LSCommand(x, chan)
+        y.start()
     elif cmd.startswith('pwd'):
         response = '/home/root/'
     elif cmd.startswith('adduser'):
