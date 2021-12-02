@@ -169,8 +169,7 @@ class LSCommand:
 
     def list_all(self):
         self.chan.send(
-            """
-            total 25056
+            """total 25056
             drwxr-xr-x 31 root root     4096 Dec  1 16:48 .
             drwxr-xr-x 20 root root    36864 Nov  2 01:51 ..
             -rw-------  1 root root    33717 Dec  1 16:48 .bash_history
