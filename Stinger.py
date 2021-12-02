@@ -193,7 +193,7 @@ def handle_connection(client, addr):
                     run = False
 
                 else:
-                    handle_command(command, chan, transport, client_ip)
+                    handle_command(command, chan, transport)
 
         except Exception as err:
             print('!!! Exception: {}: {}'.format(err.__class__, err))
