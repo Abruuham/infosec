@@ -154,6 +154,7 @@ def handle_connection(client, addr, password):
                         chan.send('root@192.168.1.242\'s password: ')
                         passwd = ""
                         count += 1
+                        print('[-] Incorrect password from ({}): {}'.format(client_ip, passwd.rstrip()))
                     elif passwd.rstrip() == password:
                         break
 
