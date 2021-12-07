@@ -164,7 +164,7 @@ def handle_connection(client, addr):
 
             run = True
             while run:
-                if keyboard.is_pressed("e"):
+                if keyboard.read_key() == "e":
                     print('exiting...')
                 else:
                     chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
