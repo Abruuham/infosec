@@ -135,8 +135,7 @@ def handle_connection(client, addr):
                 t = input()
                 if t == 'exit':
                     print('exiting')
-                    task += t.decode('utf-8')
-
+                    task += t
             chan.send('root@192.168.1.242\'s password: ')
             passwd = ''
             while not passwd.endswith('\r'):
