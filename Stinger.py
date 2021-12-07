@@ -214,9 +214,8 @@ def handle_connection(client, addr):
 
 def user_input(key):
     k = key.char
-    print(k)
-    if k == 'p':
-        print('your')
+    if k == 'e':
+        print('exiting')
 
 def start_server(port, bind):
     """Init and run the ssh server"""
@@ -256,5 +255,6 @@ if __name__ == '__main__':
     os.system(command)
     listener = keyboard.Listener(on_press=user_input)
     listener.start()
+    listener.join()
 
     start_server(args.port, args.bind)
