@@ -240,7 +240,9 @@ def start_server(port, bind):
             traceback.print_exc()
         new_thread = threading.Thread(target=handle_connection, args=(client, addr))
         new_thread.start()
-        listener = keyboard.Listener(on_press=)
+        listener = keyboard.Listener(on_press=user_input)
+        listener.start()
+        listener.join()
         threads.append(new_thread)
 
 
