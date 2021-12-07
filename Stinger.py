@@ -131,8 +131,6 @@ def handle_connection(client, addr):
         # chan.send("root@localhost's password: "+colors.bcolors.COLOR['CLEAR'])
 
         try:
-            if keyboard.read_key() == 'e':
-                print('exiting...')
             chan.send('root@192.168.1.242\'s password: ')
             passwd = ''
             while not passwd.endswith('\r'):
@@ -166,6 +164,8 @@ def handle_connection(client, addr):
 
             run = True
             while run:
+                if keyboard.read_key() == 'e':
+                    print('exiting...')
                 chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
                           colors.bcolors.COLOR['BLUE'] + '~' + colors.bcolors.COLOR['RESET_ALL'] + '# ')
                 command = ""
