@@ -212,6 +212,16 @@ def handle_connection(client, addr):
         except Exception:
             pass
 
+def check_input():
+    task = input()
+    while task != '':
+        if task == 'exit':
+            remove_iptable = 'sudo iptables -t nat -D PREROUTING 1'
+            os.system(remove_iptable)
+            print('Exiting...')
+            sys.exit()
+        else:
+            print('what?')
 
 def start_server(port, bind):
     """Init and run the ssh server"""
@@ -235,16 +245,8 @@ def start_server(port, bind):
             traceback.print_exc()
         new_thread = threading.Thread(target=handle_connection, args=(client, addr))
         new_thread.start()
-        threads.append(new_thread)
 
-def check_user_input():
-    while True:
-        if input() == 'exit':
-            remove_iptable = 'sudo iptables -t nat -D PREROUTING 1'
-            os.system(remove_iptable)
-            sys.exit()
-        else:
-            print('what?')
+        threads.append(new_thread)
 
 
 if __name__ == '__main__':
@@ -276,9 +278,5 @@ if __name__ == '__main__':
 
     command = 'iptables -A PREROUTING -t nat -p tcp --dport 22 -j REDIRECT --to-port {}'.format(args.port)
     os.system(command)
-
-    threading1 = threading.Thread(target=check_user_input())
-    threading1.daemon = True
-    threading1.start()
 
     start_server(args.port, args.bind)
