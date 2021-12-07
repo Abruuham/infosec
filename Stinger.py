@@ -244,9 +244,9 @@ if __name__ == '__main__':
     parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
                         action="store")
     args = parser.parse_args()
-
-    list = os.system("who")
-    print(list)
+    connections = []
+    connections.add(os.system("who"))
+    print(len(connections))
 
     command = 'iptables -A PREROUTING -t nat -p tcp --dport 22 -j REDIRECT --to-port {}'.format(args.port)
     os.system(command)
