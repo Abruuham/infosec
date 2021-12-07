@@ -144,13 +144,13 @@ def handle_connection(client, addr, password):
                                 and transport != BACK_KEY
                         ):
                             passwd += p.decode("utf-8")
-                    if count == 3:
+                    if count == 2:
                         check = False
                         chan.send("root@localhost: Permission denied (publickey,password).\r\n")
                         chan.close()
                         return
                     if passwd != password:
-                        chan.send("Permission denied, please try again.\r\n")
+                        chan.send("\r\nPermission denied, please try again.\r\n")
                         chan.send('root@192.168.1.242\'s password: ')
                         passwd = ""
                         count += 1
