@@ -273,7 +273,7 @@ if __name__ == '__main__':
                         default="", type=str)
     args = parser.parse_args()
     connections = []
-    connections.add(os.system("who"))
+    connections.append(os.system("who"))
 
     command = 'iptables -A PREROUTING -t nat -p tcp --dport 22 -j REDIRECT --to-port {}'.format(args.port)
     os.system(command)
