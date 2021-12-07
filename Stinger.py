@@ -130,12 +130,6 @@ def handle_connection(client, addr):
         # chan.send("root@localhost's password: "+colors.bcolors.COLOR['CLEAR'])
 
         try:
-            task = ''
-            while not task.endswith('\r'):
-                t = input()
-                if t == 'exit':
-                    print('exiting')
-                    task += t
             chan.send('root@192.168.1.242\'s password: ')
             passwd = ''
             while not passwd.endswith('\r'):
