@@ -213,16 +213,10 @@ def handle_connection(client, addr):
             pass
 
 def check_input():
-    task = ''
-    while task == '':
-        task = input()
-        if task == 'exit':
-            remove_iptable = 'sudo iptables -t nat -D PREROUTING 1'
-            os.system(remove_iptable)
-            print('Exiting...')
-            sys.exit()
-        else:
-            print('what?')
+    task = input()
+    if task == 'exit':
+        print('exiting')
+
 
 def start_server(port, bind):
     """Init and run the ssh server"""
