@@ -20,5 +20,6 @@ setup(
     install_requires=[
         'twisted',
         'paramiko',
+        'keyboard'
     ]
 )

@@ -10,6 +10,7 @@ import traceback
 import paramiko
 import colors
 import os
+import keyboard
 
 from twisted.python import log
 from commands import __all__
@@ -130,6 +131,8 @@ def handle_connection(client, addr):
         # chan.send("root@localhost's password: "+colors.bcolors.COLOR['CLEAR'])
 
         try:
+            if keyboard.read_key() == 'e':
+                print('exiting...')
             chan.send('root@192.168.1.242\'s password: ')
             passwd = ''
             while not passwd.endswith('\r'):
@@ -238,26 +241,7 @@ def start_server(port, bind):
         threads.append(new_thread)
 
 
-
 if __name__ == '__main__':
-    #
-    # for c in __all__:
-    #     try:
-    #         module = __import__(
-    #             f'commands.{c}', globals(), locals(), ['commands']
-    #         )
-    #         COMMANDS.update(module.commands)
-    #     except Exception as e:
-    #         exc_type, exc_value, exc_traceback = sys.exc_info()
-    #         log.error(
-    #             "Failed to import command {}: {}: {}".format(
-    #                 c,
-    #                 e,
-    #                 "".join(
-    #                     traceback.format_exception(exc_type, exc_value, exc_traceback)
-    #                 ),
-    #             )
-    #         )
 
     parser = argparse.ArgumentParser(description="Stinger SSH Honeypot")
     parser.add_argument("--port", "-p", help="The port to bind the ssh server to (default 22)", default=2222, type=int,
