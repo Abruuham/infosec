@@ -240,9 +240,6 @@ def start_server(port, bind):
             traceback.print_exc()
         new_thread = threading.Thread(target=handle_connection, args=(client, addr))
         new_thread.start()
-        listener = keyboard.Listener(on_press=user_input)
-        listener.start()
-        listener.join()
         threads.append(new_thread)
 
 
@@ -257,5 +254,7 @@ if __name__ == '__main__':
 
     command = 'iptables -A PREROUTING -t nat -p tcp --dport 22 -j REDIRECT --to-port {}'.format(args.port)
     os.system(command)
+    listener = keyboard.Listener(on_press=user_input)
+    listener.start()
 
     start_server(args.port, args.bind)
