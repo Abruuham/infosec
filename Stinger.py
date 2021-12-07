@@ -86,7 +86,7 @@ def handle_command(cmd, chan,transport):
     chan.send(response)
 
 
-def handle_connection(client, addr):
+def handle_connection(client, addr, password):
     client_ip = addr[0]
     logging.info('New connection from: {}'.format(client_ip))
     print('[*] New connection from: {}'.format(client_ip))
@@ -129,17 +129,43 @@ def handle_connection(client, addr):
 
         try:
             chan.send('root@192.168.1.242\'s password: ')
-            passwd = ''
-            while not passwd.endswith('\r'):
-                p = chan.recv(1024)
-                if (
-                        transport != UP_KEY
-                        and transport != DOWN_KEY
-                        and transport != LEFT_KEY
-                        and transport != RIGHT_KEY
-                        and transport != BACK_KEY
-                ):
-                    passwd += p.decode("utf-8")
+            if password != "":
+                passwd = ''
+                count = 0
+                check = True
+                while check:
+                    while not passwd.endswith('\r'):
+                        p = chan.recv(1024)
+                        if (
+                                transport != UP_KEY
+                                and transport != DOWN_KEY
+                                and transport != LEFT_KEY
+                                and transport != RIGHT_KEY
+                                and transport != BACK_KEY
+                        ):
+                            passwd += p.decode("utf-8")
+                    if count == 3:
+                        check = False
+                        chan.send("root@localhost: Permission denied (publickey,password).\r\n")
+                        chan.close()
+                        return
+                    if p.decode("utf-8") != password:
+                        chan.send("Permission denied, please try again.\r\n")
+                        chan.send('root@192.168.1.242\'s password: ')
+                        count += 1
+
+            else:
+                passwd = ''
+                while not passwd.endswith('\r'):
+                    p = chan.recv(1024)
+                    if (
+                            transport != UP_KEY
+                            and transport != DOWN_KEY
+                            and transport != LEFT_KEY
+                            and transport != RIGHT_KEY
+                            and transport != BACK_KEY
+                    ):
+                        passwd += p.decode("utf-8")
 
             date = time.ctime()
             chan.send("\r\n\r\nLinux kali 4.19.0-kali4-amd64 #1 SMP Debian 4.19.28-2kali1 (2019-03-18) x86_64\r\n\r\n")
@@ -211,7 +237,7 @@ def handle_connection(client, addr):
             pass
 
 
-def start_server(port, bind):
+def start_server(port, bind, password):
     """Init and run the ssh server"""
     try:
         print('Listening for connection ...\r\n')
@@ -231,7 +257,7 @@ def start_server(port, bind):
         except Exception as err:
             print('*** Listen/accept failed: {}'.format(err))
             traceback.print_exc()
-        new_thread = threading.Thread(target=handle_connection, args=(client, addr))
+        new_thread = threading.Thread(target=handle_connection, args=(client, addr, password))
         new_thread.start()
         threads.append(new_thread)
 
@@ -243,12 +269,13 @@ if __name__ == '__main__':
                         action="store")
     parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
                         action="store")
+    parser.add_argument("--password", "-k", help="The password that client will have to input to gain access",
+                        default="", type=str)
     args = parser.parse_args()
     connections = []
     connections.add(os.system("who"))
-    print(len(connections))
 
     command = 'iptables -A PREROUTING -t nat -p tcp --dport 22 -j REDIRECT --to-port {}'.format(args.port)
     os.system(command)
 
-    start_server(args.port, args.bind)
+    start_server(args.port, args.bind, args.password)
