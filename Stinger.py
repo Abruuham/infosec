@@ -245,8 +245,10 @@ def start_server(port, bind):
             traceback.print_exc()
         new_thread = threading.Thread(target=handle_connection, args=(client, addr))
         new_thread.start()
-
+        input_thread = threading.Thread(target=check_input)
+        input_thread.start()
         threads.append(new_thread)
+        threads.append(input_thread)
 
 
 if __name__ == '__main__':
