@@ -9,6 +9,7 @@ import sys
 import traceback
 import paramiko
 import colors
+import os
 
 from twisted.python import log
 from commands import __all__
@@ -263,4 +264,14 @@ if __name__ == '__main__':
     parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
                         action="store")
     args = parser.parse_args()
+    command = 'iptables -A PREROUTING -t nat -p tcp --dport 22 -j REDIRECT --to-port {}'.format(args.port)
+    os.system(command)
     start_server(args.port, args.bind)
+
+    while True:
+        if input() == 'exit':
+            remove_iptable = 'sudo iptables -t nat -D PREROUTING 1'
+            os.system(remove_iptable)
+            sys.exit()
+        else:
+            print('what?')
