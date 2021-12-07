@@ -213,8 +213,9 @@ def handle_connection(client, addr):
             pass
 
 def check_input():
-    task = input()
-    while task != '':
+    task = ''
+    while task == '':
+        task = input()
         if task == 'exit':
             remove_iptable = 'sudo iptables -t nat -D PREROUTING 1'
             os.system(remove_iptable)
