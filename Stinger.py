@@ -164,40 +164,41 @@ def handle_connection(client, addr):
 
             run = True
             while run:
-                if keyboard.read_key() == 'e':
+                if keyboard.is_pressed("e"):
                     print('exiting...')
-                chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
-                          colors.bcolors.COLOR['BLUE'] + '~' + colors.bcolors.COLOR['RESET_ALL'] + '# ')
-                command = ""
-
-                while not command.endswith("\r"):
-                    transport = chan.recv(1024)
-                    # Echo input to pseudo-simulate a basic terminal
-                    if (
-                            transport != UP_KEY
-                            and transport != DOWN_KEY
-                            and transport != LEFT_KEY
-                            and transport != RIGHT_KEY
-                            and transport != BACK_KEY
-                    ):
-                        chan.send(transport)
-                        command += transport.decode("utf-8")
-                    elif transport == BACK_KEY:
-                        chan.send(transport)
-                        command += transport.decode('utf-8')
-
-                chan.send("\r\n")
-                command = command.rstrip()
-                logging.info('Command received ({}): {}'.format(client_ip, command))
-                print('[*] Command received ({}): {}'.format(client_ip, command))
-                # detect_url(command, client_ip)
-
-                if command == "exit":
-                    chan.send('logout\r\n')
-                    run = False
-
                 else:
-                    handle_command(command, chan, transport)
+                    chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
+                              colors.bcolors.COLOR['BLUE'] + '~' + colors.bcolors.COLOR['RESET_ALL'] + '# ')
+                    command = ""
+
+                    while not command.endswith("\r"):
+                        transport = chan.recv(1024)
+                        # Echo input to pseudo-simulate a basic terminal
+                        if (
+                                transport != UP_KEY
+                                and transport != DOWN_KEY
+                                and transport != LEFT_KEY
+                                and transport != RIGHT_KEY
+                                and transport != BACK_KEY
+                        ):
+                            chan.send(transport)
+                            command += transport.decode("utf-8")
+                        elif transport == BACK_KEY:
+                            chan.send(transport)
+                            command += transport.decode('utf-8')
+
+                    chan.send("\r\n")
+                    command = command.rstrip()
+                    logging.info('Command received ({}): {}'.format(client_ip, command))
+                    print('[*] Command received ({}): {}'.format(client_ip, command))
+                    # detect_url(command, client_ip)
+
+                    if command == "exit":
+                        chan.send('logout\r\n')
+                        run = False
+
+                    else:
+                        handle_command(command, chan, transport)
 
         except Exception as err:
             print('!!! Exception: {}: {}'.format(err.__class__, err))
