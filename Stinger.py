@@ -10,10 +10,9 @@ import traceback
 import paramiko
 import colors
 import os
-import keyboard
-
 from twisted.python import log
 from commands import __all__
+from pynput import keyboard
 from commands.adduser import Command_adduser
 from commands.apt import APTCommand
 from StingerServer import StingerServer
@@ -164,41 +163,38 @@ def handle_connection(client, addr):
 
             run = True
             while run:
-                if keyboard.read_key() == "e":
-                    print('exiting...')
+                chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
+                          colors.bcolors.COLOR['BLUE'] + '~' + colors.bcolors.COLOR['RESET_ALL'] + '# ')
+                command = ""
+
+                while not command.endswith("\r"):
+                    transport = chan.recv(1024)
+                    # Echo input to pseudo-simulate a basic terminal
+                    if (
+                            transport != UP_KEY
+                            and transport != DOWN_KEY
+                            and transport != LEFT_KEY
+                            and transport != RIGHT_KEY
+                            and transport != BACK_KEY
+                    ):
+                        chan.send(transport)
+                        command += transport.decode("utf-8")
+                    elif transport == BACK_KEY:
+                        chan.send(transport)
+                        command += transport.decode('utf-8')
+
+                chan.send("\r\n")
+                command = command.rstrip()
+                logging.info('Command received ({}): {}'.format(client_ip, command))
+                print('[*] Command received ({}): {}'.format(client_ip, command))
+                # detect_url(command, client_ip)
+
+                if command == "exit":
+                    chan.send('logout\r\n')
+                    run = False
+
                 else:
-                    chan.send(colors.bcolors.COLOR['RED'] + "root@kali" + colors.bcolors.COLOR['RESET_ALL'] + ':' +
-                              colors.bcolors.COLOR['BLUE'] + '~' + colors.bcolors.COLOR['RESET_ALL'] + '# ')
-                    command = ""
-
-                    while not command.endswith("\r"):
-                        transport = chan.recv(1024)
-                        # Echo input to pseudo-simulate a basic terminal
-                        if (
-                                transport != UP_KEY
-                                and transport != DOWN_KEY
-                                and transport != LEFT_KEY
-                                and transport != RIGHT_KEY
-                                and transport != BACK_KEY
-                        ):
-                            chan.send(transport)
-                            command += transport.decode("utf-8")
-                        elif transport == BACK_KEY:
-                            chan.send(transport)
-                            command += transport.decode('utf-8')
-
-                    chan.send("\r\n")
-                    command = command.rstrip()
-                    logging.info('Command received ({}): {}'.format(client_ip, command))
-                    print('[*] Command received ({}): {}'.format(client_ip, command))
-                    # detect_url(command, client_ip)
-
-                    if command == "exit":
-                        chan.send('logout\r\n')
-                        run = False
-
-                    else:
-                        handle_command(command, chan, transport)
+                    handle_command(command, chan, transport)
 
         except Exception as err:
             print('!!! Exception: {}: {}'.format(err.__class__, err))
@@ -216,6 +212,11 @@ def handle_connection(client, addr):
         except Exception:
             pass
 
+def user_input(key):
+    k = key.char
+    print(k)
+    if k == 'p':
+        print('your')
 
 def start_server(port, bind):
     """Init and run the ssh server"""
@@ -239,6 +240,7 @@ def start_server(port, bind):
             traceback.print_exc()
         new_thread = threading.Thread(target=handle_connection, args=(client, addr))
         new_thread.start()
+        listener = keyboard.Listener(on_press=)
         threads.append(new_thread)
 
 
