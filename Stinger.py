@@ -127,8 +127,6 @@ def handle_connection(client, addr):
             logging.info('** Client ({}): never asked for a shell'.format(client_ip))
             raise Exception("No shell request")
 
-        # chan.send("root@localhost's password: "+colors.bcolors.COLOR['CLEAR'])
-
         try:
             chan.send('root@192.168.1.242\'s password: ')
             passwd = ''
@@ -212,10 +210,6 @@ def handle_connection(client, addr):
         except Exception:
             pass
 
-def user_input(key):
-    k = key.char
-    if k == 'e':
-        print('exiting')
 
 def start_server(port, bind):
     """Init and run the ssh server"""
@@ -251,10 +245,10 @@ if __name__ == '__main__':
                         action="store")
     args = parser.parse_args()
 
+    list = os.system("who")
+    print(list)
+
     command = 'iptables -A PREROUTING -t nat -p tcp --dport 22 -j REDIRECT --to-port {}'.format(args.port)
     os.system(command)
-    listener = keyboard.Listener(on_press=user_input)
-    listener.start()
-    listener.join()
 
     start_server(args.port, args.bind)
