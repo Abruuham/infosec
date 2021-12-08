@@ -274,7 +274,7 @@ if __name__ == '__main__':
     parser.add_argument("--bind", "-b", help="The address to bind the ssh server to", default="", type=str,
                         action="store")
     parser.add_argument("--password", "-k", help="The password that client will have to input to gain access",
-                        default="", type=str)
+                        default="", type=str, action="store")
     args = parser.parse_args()
     connections = []
     connections.append(os.system("who"))
